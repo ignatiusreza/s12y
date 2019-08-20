@@ -1,0 +1,42 @@
+{
+  "phoenix": {
+    "repo": "hexpm",
+    "version": "~> 1.4.9"
+  },
+  "phoenix_pubsub": {
+    "repo": "hexpm",
+    "version": "~> 1.1"
+  },
+  "phoenix_ecto": {
+    "repo": "hexpm",
+    "version": "~> 4.0"
+  },
+  "ecto_sql": {
+    "repo": "hexpm",
+    "version": "~> 3.1"
+  },
+  "postgrex": {
+    "repo": "hexpm",
+    "version": ">= 0.0.0"
+  },
+  "phoenix_html": {
+    "repo": "hexpm",
+    "version": "~> 2.11"
+  },
+  "phoenix_live_reload": {
+    "repo": "hexpm",
+    "version": "~> 1.2"
+  },
+  "gettext": {
+    "repo": "hexpm",
+    "version": "~> 0.11"
+  },
+  "jason": {
+    "repo": "hexpm",
+    "version": "~> 1.0"
+  },
+  "plug_cowboy": {
+    "repo": "hexpm",
+    "version": "~> 2.0"
+  }
+}
