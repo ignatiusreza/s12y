@@ -1,0 +1,68 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://hex.pm/api/packages/jason"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"docs_html_url\":\"https://hexdocs.pm/jason/\",\"downloads\":{\"all\":6106239,\"day\":48962,\"recent\":2569210,\"week\":229052},\"html_url\":\"https://hex.pm/packages/jason\",\"inserted_at\":\"2017-12-22T09:32:40.615828Z\",\"meta\":{\"description\":\"A blazing fast JSON parser and generator in pure Elixir.\",\"licenses\":[\"Apache 2.0\"],\"links\":{\"GitHub\":\"https://github.com/michalmuskala/jason\"},\"maintainers\":[]},\"name\":\"jason\",\"owners\":[{\"email\":\"michal@muskala.eu\",\"url\":\"https://hex.pm/api/users/michalmuskala\",\"username\":\"michalmuskala\"}],\"releases\":[{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/jason/releases/1.1.2\",\"version\":\"1.1.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/jason/releases/1.1.1\",\"version\":\"1.1.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/jason/releases/1.1.0\",\"version\":\"1.1.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/jason/releases/1.0.1\",\"version\":\"1.0.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/jason/releases/1.0.0\",\"version\":\"1.0.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/jason/releases/1.0.0-rc.3\",\"version\":\"1.0.0-rc.3\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/jason/releases/1.0.0-rc.2\",\"version\":\"1.0.0-rc.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/jason/releases/1.0.0-rc.1\",\"version\":\"1.0.0-rc.1\"}],\"repository\":\"hexpm\",\"retirements\":{},\"updated_at\":\"2019-08-12T08:28:01.731837Z\",\"url\":\"https://hex.pm/api/packages/jason\"}",
+      "headers": {
+        "cache-control": "public, max-age=60",
+        "content-length": "1428",
+        "content-type": "application/vnd.hex+json; charset=utf-8",
+        "date": "Thu, 22 Aug 2019 02:01:36 GMT",
+        "etag": "9848e8f77b55c00bb1f841bdd213bb95",
+        "last-modified": "Mon, 12 Aug 2019 08:28:01 GMT",
+        "server": "Cowboy",
+        "strict-transport-security": "max-age=31536000",
+        "vary": "accept, accept-encoding, accept-encoding",
+        "x-ratelimit-limit": "100",
+        "x-ratelimit-remaining": "97",
+        "x-ratelimit-reset": "1566439320",
+        "x-request-id": "Fb0cPecFsUxD_t8AHU_B",
+        "Via": "1.1 google",
+        "Alt-Svc": "clear"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  },
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://hex.pm/api/packages/jason/releases/1.1.2"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"checksum\":\"fdf843bca858203ae1de16da2ee206f53416bbda5dc8c9e78f43243de4bc3afe\",\"docs_html_url\":\"https://hexdocs.pm/jason/1.1.2/\",\"downloads\":4527917,\"has_docs\":true,\"html_url\":\"https://hex.pm/packages/jason/1.1.2\",\"inserted_at\":\"2018-10-19T18:01:19.398712Z\",\"meta\":{\"app\":\"jason\",\"build_tools\":[\"mix\"],\"elixir\":\"~> 1.4\"},\"package_url\":\"https://hex.pm/api/packages/jason\",\"publisher\":{\"email\":\"michal@muskala.eu\",\"url\":\"https://hex.pm/api/users/michalmuskala\",\"username\":\"michalmuskala\"},\"requirements\":{\"decimal\":{\"app\":\"decimal\",\"optional\":true,\"requirement\":\"~> 1.0\"}},\"retirement\":null,\"updated_at\":\"2019-07-28T21:14:20.542440Z\",\"url\":\"https://hex.pm/api/packages/jason/releases/1.1.2\",\"version\":\"1.1.2\"}",
+      "headers": {
+        "cache-control": "public, max-age=60",
+        "content-length": "707",
+        "content-type": "application/vnd.hex+json; charset=utf-8",
+        "date": "Thu, 22 Aug 2019 02:01:36 GMT",
+        "etag": "f07416e362d4d870c175dccb293849e3",
+        "last-modified": "Tue, 20 Aug 2019 00:00:00 GMT",
+        "server": "Cowboy",
+        "strict-transport-security": "max-age=31536000",
+        "vary": "accept, accept-encoding, accept-encoding",
+        "x-ratelimit-limit": "100",
+        "x-ratelimit-remaining": "96",
+        "x-ratelimit-reset": "1566439320",
+        "x-request-id": "Fb0cPfJVIRiaN8sAA0dS",
+        "Via": "1.1 google",
+        "Alt-Svc": "clear"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

@@ -1,0 +1,68 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://hex.pm/api/packages/phoenix"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"docs_html_url\":\"https://hexdocs.pm/phoenix/\",\"downloads\":{\"all\":10629013,\"day\":36810,\"recent\":2086847,\"week\":177634},\"html_url\":\"https://hex.pm/packages/phoenix\",\"inserted_at\":\"2014-04-21T22:38:32.000000Z\",\"meta\":{\"description\":\"Productive. Reliable. Fast. A productive web framework that\\ndoes not compromise speed or maintainability.\",\"licenses\":[\"MIT\"],\"links\":{\"github\":\"https://github.com/phoenixframework/phoenix\"},\"maintainers\":[]},\"name\":\"phoenix\",\"owners\":[{\"email\":\"chris@chrismccord.com\",\"url\":\"https://hex.pm/api/users/chrismccord\",\"username\":\"chrismccord\"},{\"email\":\"jose.valim@gmail.com\",\"url\":\"https://hex.pm/api/users/josevalim\",\"username\":\"josevalim\"},{\"email\":\"gazler@gmail.com\",\"url\":\"https://hex.pm/api/users/gazler\",\"username\":\"gazler\"},{\"email\":\"jason@rokkincat.com\",\"url\":\"https://hex.pm/api/users/jeregrine\",\"username\":\"jeregrine\"}],\"releases\":[{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.9\",\"version\":\"1.4.9\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.8\",\"version\":\"1.4.8\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.7\",\"version\":\"1.4.7\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.6\",\"version\":\"1.4.6\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.5\",\"version\":\"1.4.5\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.4\",\"version\":\"1.4.4\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.3\",\"version\":\"1.4.3\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.2\",\"version\":\"1.4.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.1\",\"version\":\"1.4.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.0\",\"version\":\"1.4.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.0-rc.3\",\"version\":\"1.4.0-rc.3\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.0-rc.2\",\"version\":\"1.4.0-rc.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.0-rc.1\",\"version\":\"1.4.0-rc.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.0-rc.0\",\"version\":\"1.4.0-rc.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.3.4\",\"version\":\"1.3.4\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.3.3\",\"version\":\"1.3.3\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.3.2\",\"version\":\"1.3.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.3.1\",\"version\":\"1.3.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.3.0\",\"version\":\"1.3.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.3.0-rc.3\",\"version\":\"1.3.0-rc.3\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.3.0-rc.2\",\"version\":\"1.3.0-rc.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.3.0-rc.1\",\"version\":\"1.3.0-rc.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.3.0-rc.0\",\"version\":\"1.3.0-rc.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.2.5\",\"version\":\"1.2.5\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.2.4\",\"version\":\"1.2.4\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.2.3\",\"version\":\"1.2.3\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.2.2\",\"version\":\"1.2.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.2.1\",\"version\":\"1.2.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.2.0\",\"version\":\"1.2.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.2.0-rc.1\",\"version\":\"1.2.0-rc.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.2.0-rc.0\",\"version\":\"1.2.0-rc.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.9\",\"version\":\"1.1.9\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.8\",\"version\":\"1.1.8\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.7\",\"version\":\"1.1.7\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.6\",\"version\":\"1.1.6\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.5\",\"version\":\"1.1.5\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.4\",\"version\":\"1.1.4\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.3\",\"version\":\"1.1.3\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.2\",\"version\":\"1.1.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.1\",\"version\":\"1.1.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.1.0\",\"version\":\"1.1.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.0.6\",\"version\":\"1.0.6\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.0.5\",\"version\":\"1.0.5\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.0.4\",\"version\":\"1.0.4\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.0.3\",\"version\":\"1.0.3\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.0.2\",\"version\":\"1.0.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.0.1\",\"version\":\"1.0.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.0.0\",\"version\":\"1.0.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.17.1\",\"version\":\"0.17.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.17.0\",\"version\":\"0.17.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.16.1\",\"version\":\"0.16.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.16.0\",\"version\":\"0.16.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.15.0\",\"version\":\"0.15.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.14.0\",\"version\":\"0.14.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.13.1\",\"version\":\"0.13.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.13.0\",\"version\":\"0.13.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.12.0\",\"version\":\"0.12.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.11.0\",\"version\":\"0.11.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.10.0\",\"version\":\"0.10.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.9.0\",\"version\":\"0.9.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.8.0\",\"version\":\"0.8.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.7.2\",\"version\":\"0.7.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.7.1\",\"version\":\"0.7.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.7.0\",\"version\":\"0.7.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.6.2\",\"version\":\"0.6.2\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.6.1\",\"version\":\"0.6.1\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.6.0\",\"version\":\"0.6.0\"},{\"has_docs\":true,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.5.0\",\"version\":\"0.5.0\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.4.1\",\"version\":\"0.4.1\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.4.0\",\"version\":\"0.4.0\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.3.1\",\"version\":\"0.3.1\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.3.0\",\"version\":\"0.3.0\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.11\",\"version\":\"0.2.11\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.10\",\"version\":\"0.2.10\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.9\",\"version\":\"0.2.9\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.8\",\"version\":\"0.2.8\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.7\",\"version\":\"0.2.7\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.6\",\"version\":\"0.2.6\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.5\",\"version\":\"0.2.5\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.4\",\"version\":\"0.2.4\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.3\",\"version\":\"0.2.3\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.2\",\"version\":\"0.2.2\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.1\",\"version\":\"0.2.1\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.2.0\",\"version\":\"0.2.0\"},{\"has_docs\":false,\"url\":\"https://hex.pm/api/packages/phoenix/releases/0.1.0\",\"version\":\"0.1.0\"}],\"repository\":\"hexpm\",\"retirements\":{},\"updated_at\":\"2019-08-11T21:43:04.363952Z\",\"url\":\"https://hex.pm/api/packages/phoenix\"}",
+      "headers": {
+        "cache-control": "public, max-age=60",
+        "content-length": "9215",
+        "content-type": "application/vnd.hex+json; charset=utf-8",
+        "date": "Thu, 22 Aug 2019 02:01:35 GMT",
+        "etag": "70c1c24f184f27a169fea9af6be2ce44",
+        "last-modified": "Sun, 11 Aug 2019 21:43:04 GMT",
+        "server": "Cowboy",
+        "strict-transport-security": "max-age=31536000",
+        "vary": "accept, accept-encoding, accept-encoding",
+        "x-ratelimit-limit": "100",
+        "x-ratelimit-remaining": "99",
+        "x-ratelimit-reset": "1566439320",
+        "x-request-id": "Fb0cPaqzSYFMIVEAHU-x",
+        "Via": "1.1 google",
+        "Alt-Svc": "clear"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  },
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://hex.pm/api/packages/phoenix/releases/1.4.9"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"checksum\":\"a40833266f1f55750d784fb780d8d5945f9f048be4d474b5b6197aec9db0a22e\",\"docs_html_url\":\"https://hexdocs.pm/phoenix/1.4.9/\",\"downloads\":267798,\"has_docs\":true,\"html_url\":\"https://hex.pm/packages/phoenix/1.4.9\",\"inserted_at\":\"2019-07-04T03:13:36.472591Z\",\"meta\":{\"app\":\"phoenix\",\"build_tools\":[\"mix\"],\"elixir\":\"~> 1.4\"},\"package_url\":\"https://hex.pm/api/packages/phoenix\",\"publisher\":{\"email\":\"chris@chrismccord.com\",\"url\":\"https://hex.pm/api/users/chrismccord\",\"username\":\"chrismccord\"},\"requirements\":{\"jason\":{\"app\":\"jason\",\"optional\":true,\"requirement\":\"~> 1.0\"},\"phoenix_pubsub\":{\"app\":\"phoenix_pubsub\",\"optional\":false,\"requirement\":\"~> 1.1\"},\"plug\":{\"app\":\"plug\",\"optional\":false,\"requirement\":\"~> 1.8.1 or ~> 1.9\"},\"plug_cowboy\":{\"app\":\"plug_cowboy\",\"optional\":true,\"requirement\":\"~> 1.0 or ~> 2.0\"},\"telemetry\":{\"app\":\"telemetry\",\"optional\":false,\"requirement\":\"~> 0.4\"}},\"retirement\":null,\"updated_at\":\"2019-07-28T21:15:35.951804Z\",\"url\":\"https://hex.pm/api/packages/phoenix/releases/1.4.9\",\"version\":\"1.4.9\"}",
+      "headers": {
+        "cache-control": "public, max-age=60",
+        "content-length": "1025",
+        "content-type": "application/vnd.hex+json; charset=utf-8",
+        "date": "Thu, 22 Aug 2019 02:01:35 GMT",
+        "etag": "058172f76ce487ef4fd686960c82113f",
+        "last-modified": "Tue, 20 Aug 2019 00:00:00 GMT",
+        "server": "Cowboy",
+        "strict-transport-security": "max-age=31536000",
+        "vary": "accept, accept-encoding, accept-encoding",
+        "x-ratelimit-limit": "100",
+        "x-ratelimit-remaining": "98",
+        "x-ratelimit-reset": "1566439320",
+        "x-request-id": "Fb0cPbhOfc413R0AA0dC",
+        "Via": "1.1 google",
+        "Alt-Svc": "clear"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]
