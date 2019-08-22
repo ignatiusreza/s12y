@@ -2,20 +2,26 @@ jobs:
   parsers/mix:
     docker:
       - image: circleci/elixir:1.9
+    working_directory: ~/repo/apps/parsers/mix
 
     steps:
-      - checkout
-      - run: cd apps/parsers/mix
+      - checkout:
+          path: ~/repo
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
       - run: mix deps.get
       - run: mix test
 
   registries/hexpm:
     docker:
       - image: circleci/elixir:1.9
+    working_directory: ~/repo/apps/registries/hexpm
 
     steps:
-      - checkout
-      - run: cd apps/registries/hexpm
+      - checkout:
+          path: ~/repo
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
       - run: mix deps.get
       - run: mix test
 
