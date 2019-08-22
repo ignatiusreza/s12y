@@ -1,0 +1,36 @@
+name: Elixir CI
+
+on: push
+
+jobs:
+  parsers-mix:
+    runs-on: ubuntu-latest
+
+    container:
+      image: elixir:1.9.1-slim
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run Tests
+        working-directory: apps/parsers/mix
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+          mix test
+
+  registries-hexpm:
+    runs-on: ubuntu-latest
+
+    container:
+      image: elixir:1.9.1-slim
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run Tests
+        working-directory: apps/registries/hexpm
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+          mix test
