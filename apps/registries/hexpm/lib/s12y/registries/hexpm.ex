@@ -6,6 +6,5 @@ defmodule S12y.Registries.Hexpm do
   """
   def lookup(package, version) do
     Registry.lookup(package, version)
-    |> Jason.encode!()
   end
 end

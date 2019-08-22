@@ -17,7 +17,12 @@ defmodule S12y.Registries.HexpmTest do
           Registries.Hexpm.lookup(package, version)
         end
 
-      assert Jason.decode!(parsed) == Jason.decode!(output)
+      assert normalize(parsed) == Jason.decode!(output)
     end
+  end
+
+  def normalize(struct) do
+    Jason.encode!(struct)
+    |> Jason.decode!()
   end
 end
