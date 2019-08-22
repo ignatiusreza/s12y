@@ -1,0 +1,45 @@
+{
+  "name": "phoenix",
+  "version": "1.4.9",
+  "repo": "https://github.com/phoenixframework/phoenix",
+  "dependencies": {
+    "jason": {
+      "repo": "hexpm",
+      "version": "~> 1.0"
+    },
+    "phoenix_pubsub": {
+      "repo": "hexpm",
+      "version": "~> 1.1"
+    },
+    "plug": {
+      "repo": "hexpm",
+      "version": "~> 1.8.1 or ~> 1.9"
+    },
+    "plug_cowboy": {
+      "repo": "hexpm",
+      "version": "~> 1.0 or ~> 2.0"
+    },
+    "telemetry": {
+      "repo": "hexpm",
+      "version": "~> 0.4"
+    }
+  },
+  "maintainers": {
+    "chrismccord": {
+      "email": "chris@chrismccord.com",
+      "url": "https://hex.pm/api/users/chrismccord"
+    },
+    "josevalim": {
+      "email": "jose.valim@gmail.com",
+      "url": "https://hex.pm/api/users/josevalim"
+    },
+    "gazler": {
+      "email": "gazler@gmail.com",
+      "url": "https://hex.pm/api/users/gazler"
+    },
+    "jeregrine": {
+      "email": "jason@rokkincat.com",
+      "url": "https://hex.pm/api/users/jeregrine"
+    }
+  }
+}

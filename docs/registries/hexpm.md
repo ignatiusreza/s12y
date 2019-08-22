@@ -1,5 +1,6 @@
 # Hex
 
+- API Root: `https://hex.pm/api`
 - Docs: `https://hexpm.docs.apiary.io`
 
 - Available Info:
@@ -10,7 +11,7 @@
 
 - Sample Endpoint:
 
-  - `https://hex.pm/api/packages/[packageName]`
+  - `/packages/[packageName]`
 
     ```js
     {
@@ -53,7 +54,7 @@
     }
     ```
 
-  - `https://hex.pm/api/packages/[packageName]/releases/[version]`
+  - `/packages/[packageName]/releases/[version]`
 
     ```js
     {

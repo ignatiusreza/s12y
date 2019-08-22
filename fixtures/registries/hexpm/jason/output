@@ -1,0 +1,17 @@
+{
+  "name": "jason",
+  "version": "1.1.2",
+  "repo": "https://github.com/michalmuskala/jason",
+  "dependencies": {
+    "decimal": {
+      "repo": "hexpm",
+      "version": "~> 1.0"
+    }
+  },
+  "maintainers": {
+    "michalmuskala": {
+      "email": "michal@muskala.eu",
+      "url": "https://hex.pm/api/users/michalmuskala"
+    }
+  }
+}
