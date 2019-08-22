@@ -1,9 +1,9 @@
-defmodule Hexpm.MixProject do
+defmodule S12y.Registries.Hexpm.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :hexpm,
+      app: :hexpm_registry,
       version: "0.1.0",
       elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -26,9 +26,9 @@ defmodule Hexpm.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:jason, "~> 1.1"},
       {:httpoison, "~> 1.5"},
-      {:exvcr, "~> 0.10", only: :test},
-      {:jason, "~> 1.1", only: :test}
+      {:exvcr, "~> 0.10", only: :test}
     ]
   end
 end
