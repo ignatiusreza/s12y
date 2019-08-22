@@ -1,0 +1,27 @@
+jobs:
+  parsers/mix:
+    docker:
+      - image: circleci/elixir:1.9
+
+    steps:
+      - checkout
+      - run: cd apps/parsers/mix
+      - run: mix deps.get
+      - run: mix test
+
+  registries/hexpm:
+    docker:
+      - image: circleci/elixir:1.9
+
+    steps:
+      - checkout
+      - run: cd apps/registries/hexpm
+      - run: mix deps.get
+      - run: mix test
+
+workflows:
+  version: 2
+  test_all:
+    jobs:
+      - parsers/mix
+      - registries/hexpm
