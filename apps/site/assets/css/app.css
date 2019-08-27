@@ -2,4 +2,8 @@
 
 @tailwind components;
 
+body {
+  @apply font-sans font-antialised text-base;
+}
+
 @tailwind utilities;
