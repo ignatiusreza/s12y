@@ -3,7 +3,7 @@
 @tailwind components;
 
 body {
-  @apply font-sans font-antialised text-base;
+  @apply font-sans text-base;
 }
 
 @tailwind utilities;
