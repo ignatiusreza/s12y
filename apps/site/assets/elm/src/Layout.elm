@@ -1,7 +1,10 @@
 module Layout exposing (view)
 
 import Browser
+import Component.Svg as Svg exposing (view)
 import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Entity exposing (copy)
 
 
 
@@ -17,9 +20,19 @@ view { title, content } =
 
 viewHeader : Html msg
 viewHeader =
-    header [] [ text "this is a header" ]
+    header
+        []
+        [ a
+            [ href "/" ]
+            [ Svg.view [] Svg.Logo ]
+        , a
+            [ href "https://github.com/ignatiusreza/s12y"
+            , target "_blank"
+            ]
+            [ Svg.view [] Svg.Github ]
+        ]
 
 
 viewFooter : Html msg
 viewFooter =
-    footer [] [ text "this is a footer" ]
+    footer [] [ text (copy ++ " Copyright s12y, 2019 - Present") ]
