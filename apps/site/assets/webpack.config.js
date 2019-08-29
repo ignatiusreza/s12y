@@ -57,6 +57,16 @@ module.exports = (env, options) => ({
             loader: "postcss-loader"
           }
         ]
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "svg-sprite-loader",
+            options: {}
+          },
+          "svgo-loader"
+        ]
       }
     ]
   },
