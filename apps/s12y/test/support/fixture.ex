@@ -10,9 +10,11 @@ defmodule S12y.Fixture do
   end
 
   @fixtures_path Path.expand("../../../../fixtures", __DIR__)
+  def fixture_path(path), do: Path.expand(path, @fixtures_path)
+
   def read_fixture!(path) do
     path
-    |> Path.expand(@fixtures_path)
+    |> fixture_path
     |> File.read!()
   end
 

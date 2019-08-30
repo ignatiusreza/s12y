@@ -23,4 +23,10 @@ defmodule S12yWeb.Router do
   # scope "/api", S12yWeb do
   #   pipe_through :api
   # end
+
+  forward "/api", Absinthe.Plug, schema: S12yWeb.Schema
+
+  if Mix.env() == :dev do
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: S12yWeb.Schema
+  end
 end
