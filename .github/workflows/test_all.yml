@@ -35,7 +35,7 @@ jobs:
           mix deps.get
           mix test
 
-  site:
+  s12y:
     runs-on: ubuntu-latest
 
     container:
@@ -56,7 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run Tests
-        working-directory: apps/site
+        working-directory: apps/s12y
         env:
           MIX_ENV: test
           POSTGRES_HOST: postgres

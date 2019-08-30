@@ -1,0 +1,31 @@
+defmodule S12y.Application do
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
+
+  use Application
+
+  def start(_type, _args) do
+    # List all child processes to be supervised
+    children = [
+      # Start the Ecto repository
+      S12y.Repo,
+      # Start the endpoint when the application starts
+      S12yWeb.Endpoint
+      # Starts a worker by calling: S12y.Worker.start_link(arg)
+      # {S12y.Worker, arg},
+    ]
+
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: S12y.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+
+  # Tell Phoenix to update the endpoint configuration
+  # whenever the application is updated.
+  def config_change(changed, _new, removed) do
+    S12yWeb.Endpoint.config_change(changed, removed)
+    :ok
+  end
+end
