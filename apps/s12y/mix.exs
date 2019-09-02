@@ -42,6 +42,8 @@ defmodule S12y.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
+      {:absinthe, "~> 1.4"},
+      {:absinthe_plug, "~> 1.4"},
       {:plug_cowboy, "~> 2.0"}
     ]
   end
