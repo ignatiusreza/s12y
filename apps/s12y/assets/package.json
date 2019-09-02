@@ -2,6 +2,7 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
+    "api": "elm-graphql http://localhost:4000/api --base Api.Graphql --output elm/src",
     "deploy": "webpack --mode production",
     "watch": "webpack --mode development --watch"
   },
@@ -12,6 +13,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
+    "@dillonkearns/elm-graphql": "^3.6.2",
     "babel-loader": "^8.0.0",
     "copy-webpack-plugin": "^4.5.0",
     "css-loader": "^2.1.1",

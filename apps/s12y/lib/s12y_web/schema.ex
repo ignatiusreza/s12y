@@ -16,7 +16,7 @@ defmodule S12yWeb.Schema do
   mutation do
     @desc "Create a project"
     field :create_project, type: :project do
-      arg :configurations, list_of(:configuration_input)
+      arg :configurations, non_null(list_of(:configuration_input))
 
       resolve &Resolvers.Project.create_project/3
     end
