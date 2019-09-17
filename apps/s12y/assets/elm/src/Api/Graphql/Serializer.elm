@@ -1,7 +1,11 @@
 module Api.Graphql.Serializer exposing (toHttpPost)
 
 import Api.Graphql.Schema as Schema exposing (Schema)
+import Api.Graphql.Schema.Argument as Argument exposing (Argument)
 import Api.Graphql.Schema.Field as Field exposing (Field)
+import Api.Graphql.Schema.Value as Value exposing (Value)
+import Debug exposing (todo)
+import File exposing (File)
 import Http
 
 
@@ -31,7 +35,7 @@ toHttpPost toMsg schema =
 
 toQueryRequest : HttpResult msg -> List Field -> HttpPost msg
 toQueryRequest toMsg fields =
-    { body = Http.emptyBody -- TODO: work on this when we actually need to
+    { body = todo "Add support for query request"
     , expect = Http.expectWhatever toMsg
     }
 
@@ -42,6 +46,12 @@ toQueryRequest toMsg fields =
 
 toMutationRequest : HttpResult msg -> List Field -> HttpPost msg
 toMutationRequest toMsg fields =
-    { body = Http.emptyBody
+    { body = toMutationBody fields
     , expect = Http.expectWhatever toMsg
     }
+
+
+toMutationBody : List Field -> Http.Body
+toMutationBody fields =
+    [ Http.stringPart "query" (Schema.serializeMutation fields) ]
+        |> Http.multipartBody
