@@ -1,10 +1,11 @@
 module Layout exposing (view)
 
 import Browser
-import Component.Svg as Svg exposing (view)
+import Component.Svg as Svg
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Entity exposing (copy)
+import Html.Lazy exposing (lazy)
 
 
 
@@ -14,8 +15,13 @@ import Html.Entity exposing (copy)
 view : { title : String, content : Html msg } -> Browser.Document msg
 view { title, content } =
     { title = title ++ " -- s12y"
-    , body = viewHeader :: content :: [ viewFooter ]
+    , body = svgRoot :: viewHeader :: content :: [ viewFooter ]
     }
+
+
+svgRoot : Html msg
+svgRoot =
+    lazy (\a -> div [ id "svg-root" ] a) []
 
 
 viewHeader : Html msg

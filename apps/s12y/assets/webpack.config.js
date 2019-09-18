@@ -63,7 +63,9 @@ module.exports = (env, options) => ({
         use: [
           {
             loader: "svg-sprite-loader",
-            options: {}
+            options: {
+              spriteModule: "./js/spriteModule"
+            }
           },
           "svgo-loader"
         ]
