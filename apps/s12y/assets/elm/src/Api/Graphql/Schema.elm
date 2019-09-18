@@ -6,23 +6,23 @@ import Json.Decode as Decode exposing (Decoder)
 import String.Interpolate exposing (interpolate)
 
 
-type Schema
-    = Query (List Field)
-    | Mutation (List Field)
+type Schema decodesTo
+    = Query (List Field) (Decoder decodesTo)
+    | Mutation (List Field) (Decoder decodesTo)
 
 
 
 -- BUILDER
 
 
-query : List Field -> Schema
-query fields =
-    Query fields
+query : List Field -> Decoder decodesTo -> Schema decodesTo
+query fields decoder =
+    Query fields decoder
 
 
-mutation : List Field -> Schema
-mutation fields =
-    Mutation fields
+mutation : List Field -> Decoder decodesTo -> Schema decodesTo
+mutation fields decoder =
+    Mutation fields decoder
 
 
 

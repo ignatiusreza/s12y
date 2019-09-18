@@ -1,4 +1,4 @@
-module Api.Graphql.Serializer exposing (toHttpPost)
+module Api.Graphql.Serializer exposing (HttpResult, toHttpPost)
 
 import Api.Graphql.Schema as Schema exposing (Schema)
 import Api.Graphql.Schema.Argument as Argument exposing (Argument)
@@ -7,6 +7,7 @@ import Api.Graphql.Schema.Value as Value exposing (Value)
 import Debug exposing (todo)
 import File exposing (File)
 import Http
+import Json.Decode as Decode exposing (Decoder)
 
 
 type alias HttpPost msg =
@@ -15,28 +16,28 @@ type alias HttpPost msg =
     }
 
 
-type alias HttpResult msg =
-    Result Http.Error () -> msg
+type alias HttpResult decodesTo =
+    Result Http.Error decodesTo
 
 
-toHttpPost : HttpResult msg -> Schema -> HttpPost msg
+toHttpPost : (HttpResult decodesTo -> msg) -> Schema decodesTo -> HttpPost msg
 toHttpPost toMsg schema =
     case schema of
-        Schema.Query fields ->
-            toQueryRequest toMsg fields
+        Schema.Query fields decoder ->
+            toQueryRequest toMsg fields decoder
 
-        Schema.Mutation fields ->
-            toMutationRequest toMsg fields
+        Schema.Mutation fields decoder ->
+            toMutationRequest toMsg fields decoder
 
 
 
 -- QUERY
 
 
-toQueryRequest : HttpResult msg -> List Field -> HttpPost msg
-toQueryRequest toMsg fields =
+toQueryRequest : (HttpResult decodesTo -> msg) -> List Field -> Decoder decodesTo -> HttpPost msg
+toQueryRequest toMsg fields decoder =
     { body = todo "Add support for query request"
-    , expect = Http.expectWhatever toMsg
+    , expect = expectJson toMsg decoder
     }
 
 
@@ -44,10 +45,10 @@ toQueryRequest toMsg fields =
 -- MUTATION
 
 
-toMutationRequest : HttpResult msg -> List Field -> HttpPost msg
-toMutationRequest toMsg fields =
+toMutationRequest : (HttpResult decodesTo -> msg) -> List Field -> Decoder decodesTo -> HttpPost msg
+toMutationRequest toMsg fields decoder =
     { body = toMutationBody fields
-    , expect = Http.expectWhatever toMsg
+    , expect = expectJson toMsg decoder
     }
 
 
@@ -119,3 +120,33 @@ filesPart files =
 
         file :: _ ->
             todo "Uploading multiple files is not yet supported" (filesPart [ file ])
+
+
+
+-- EXPECTATION
+
+
+expectJson : (HttpResult decodesTo -> msg) -> Decode.Decoder decodesTo -> Http.Expect msg
+expectJson toMsg decoder =
+    Http.expectStringResponse toMsg <|
+        \response ->
+            case response of
+                Http.BadUrl_ url ->
+                    Http.BadUrl url |> Err
+
+                Http.Timeout_ ->
+                    Http.Timeout |> Err
+
+                Http.NetworkError_ ->
+                    Http.NetworkError |> Err
+
+                Http.BadStatus_ metadata body ->
+                    Http.BadStatus metadata.statusCode |> Err
+
+                Http.GoodStatus_ metadata body ->
+                    case Decode.decodeString (Decode.field "data" decoder) body of
+                        Ok value ->
+                            Ok value
+
+                        Err err ->
+                            Http.BadBody (Decode.errorToString err) |> Err

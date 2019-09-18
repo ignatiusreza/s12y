@@ -4,7 +4,9 @@ import Api.Graphql.Schema as Schema exposing (Schema)
 import Api.Graphql.Schema.Argument as Argument exposing (Argument)
 import Api.Graphql.Schema.Field as Field
 import Api.Graphql.Schema.Value as Value exposing (Value)
+import Api.Graphql.Type exposing (Project)
 import File exposing (File)
+import Json.Decode as Decode
 
 
 type alias ConfigurationInput =
@@ -17,13 +19,16 @@ type alias CreateProjectArguments =
     { configurations : List ConfigurationInput }
 
 
-createProject : CreateProjectArguments -> Schema
+createProject : CreateProjectArguments -> Schema Project
 createProject arguments =
-    [ Field.inner "createProject"
-        [ Argument.required "configurations" (Value.list encodeConfigurationInput arguments.configurations) ]
-        [ Field.leaf "id" [] ]
-    ]
-        |> Schema.mutation
+    Schema.mutation
+        [ Field.inner "createProject"
+            [ Argument.required "configurations" (Value.list encodeConfigurationInput arguments.configurations) ]
+            [ Field.leaf "id" [] ]
+        ]
+    <|
+        Decode.field "createProject"
+            (Decode.map Project (Decode.field "id" Decode.string))
 
 
 encodeConfigurationInput : ConfigurationInput -> Value

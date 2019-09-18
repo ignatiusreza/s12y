@@ -1,11 +1,15 @@
-module Api exposing (send)
+module Api exposing (ApiResult, send)
 
 import Api.Graphql.Schema as Schema exposing (Schema)
-import Api.Graphql.Serializer exposing (toHttpPost)
+import Api.Graphql.Serializer exposing (HttpResult, toHttpPost)
 import Http
 
 
-send : (Result Http.Error () -> msg) -> Schema -> Cmd msg
+type alias ApiResult decodesTo =
+    HttpResult decodesTo
+
+
+send : (HttpResult decodesTo -> msg) -> Schema decodesTo -> Cmd msg
 send toMsg schema =
     schema
         |> toHttpPost toMsg

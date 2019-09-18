@@ -1,11 +1,16 @@
-module Api.Project exposing (createProject)
+module Api.Project exposing (Project, createProject)
 
 import Api.Graphql.Mutation as Mutation exposing (ConfigurationInput, CreateProjectArguments)
 import Api.Graphql.Schema exposing (Schema)
+import Api.Graphql.Type as Type
 import File exposing (File, name)
 
 
-createProject : File -> Schema
+type alias Project =
+    Type.Project
+
+
+createProject : File -> Schema Project
 createProject file =
     Mutation.createProject (createProjectArguments file)
 
