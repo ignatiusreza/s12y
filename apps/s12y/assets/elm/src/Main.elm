@@ -65,7 +65,21 @@ subscriptions model =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case ( msg, model.route ) of
+        ( HomeMsg homeMsg, Route.Home homeModel ) ->
+            homeModel
+                |> Page.Home.update homeMsg
+                |> updateRoute Route.Home HomeMsg model
+
+        ( _, _ ) ->
+            ( model, Cmd.none )
+
+
+updateRoute : (a -> Route) -> (b -> Msg) -> Model -> ( a, Cmd b ) -> ( Model, Cmd Msg )
+updateRoute toRoute toMsg model ( pageModel, pageCmd ) =
+    ( { model | route = toRoute pageModel }
+    , Cmd.map toMsg pageCmd
+    )
 
 
 
@@ -78,8 +92,8 @@ view model =
         Route.Loading ->
             viewPage Page.Loading.view
 
-        Route.Home ->
-            viewPage2 Page.Home.view HomeMsg
+        Route.Home homeModel ->
+            viewPage2 (Page.Home.view homeModel) HomeMsg
 
         Route.NotFound ->
             viewPage Page.NotFound.view
