@@ -53,5 +53,69 @@ toMutationRequest toMsg fields =
 
 toMutationBody : List Field -> Http.Body
 toMutationBody fields =
-    [ Http.stringPart "query" (Schema.serializeMutation fields) ]
+    fields
+        |> extractFiles
+        |> filesPart
+        |> List.append [ Http.stringPart "query" (Schema.serializeMutation fields) ]
         |> Http.multipartBody
+
+
+
+-- MUTATION WITH FILES
+
+
+extractFiles : List Field -> List File
+extractFiles fields =
+    fields
+        |> List.foldl extractFilesFromField []
+
+
+extractFilesFromField : Field -> List File -> List File
+extractFilesFromField field files =
+    case field of
+        Field.Inner name arguments children ->
+            extractFilesFromField (Field.Leaf name arguments) files
+
+        Field.Leaf name arguments ->
+            arguments
+                |> List.foldl extractFilesFromArgument files
+
+
+extractFilesFromArgument : Argument -> List File -> List File
+extractFilesFromArgument (Argument.Required _ value) files =
+    extractFilesFromValue files value
+
+
+extractFilesFromValue : List File -> Value -> List File
+extractFilesFromValue files value =
+    case value of
+        Value.File file ->
+            files ++ [ file ]
+
+        Value.List values ->
+            values
+                |> List.map (extractFilesFromValue files)
+                |> List.concat
+                |> List.append files
+
+        Value.Object object ->
+            object
+                |> List.map (\( k, v ) -> extractFilesFromValue files v)
+                |> List.concat
+                |> List.append files
+
+        _ ->
+            files
+
+
+filesPart : List File -> List Http.Part
+filesPart files =
+    case files of
+        [] ->
+            []
+
+        [ file ] ->
+            [ Http.filePart "upload" file ]
+
+        file :: _ ->
+            todo "Uploading multiple files is not yet supported" (filesPart [ file ])
