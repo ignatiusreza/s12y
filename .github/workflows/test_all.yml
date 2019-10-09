@@ -1,4 +1,4 @@
-name: Elixir CI
+name: Test
 
 on: push
 
@@ -55,7 +55,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Run Tests
+      - name: Prepare Database
         working-directory: apps/s12y
         env:
           MIX_ENV: test
@@ -65,5 +65,56 @@ jobs:
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
-          mix ecto.create
+          mix ecto.setup
+
+      - name: Run Tests
+        working-directory: apps/s12y
+        env:
+          MIX_ENV: test
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: mix test
+
+  web:
+    runs-on: ubuntu-latest
+
+    container:
+      image: elixir:1.9.1-slim
+
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Prepare Database
+        working-directory: apps/s12y
+        env:
+          MIX_ENV: test
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+          mix ecto.setup
+
+      - name: Run Tests
+        working-directory: apps/web
+        env:
+          MIX_ENV: test
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
           mix test
