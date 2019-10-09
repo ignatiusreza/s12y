@@ -5,10 +5,14 @@ defmodule S12y.Parsers.MixTest do
   alias S12y.Parsers
 
   generate do
-    test "parse input into output", %{fixture: fixture} do
-      {:ok, input} = read_input(fixture)
+    setup %{fixture: fixture} do
+      {:ok, input} = prepare_input(fixture)
       {:ok, output} = read_output(fixture)
 
+      %{input: input, output: output}
+    end
+
+    test "parse input into output", %{input: input, output: output} do
       parsed = Parsers.Mix.parse(input)
 
       assert Jason.decode!(parsed) == Jason.decode!(output)
