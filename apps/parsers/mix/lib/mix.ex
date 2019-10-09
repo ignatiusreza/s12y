@@ -2,9 +2,11 @@ defmodule S12y.Parsers.Mix do
   alias S12y.Parsers.Mix.Parser
 
   @doc """
-  Parse arbitrary mix.exs string input and return the list of top-level dependencies defined in it.
+  Parse arbitrary mix.exs file and return the list of top-level dependencies defined in it.
+
+  The file are expected to exist under `/tmp/[id]/mix.exs`.
   """
-  def parse(source) do
-    Parser.start(source)
+  def parse(id) do
+    Parser.start(id)
   end
 end
