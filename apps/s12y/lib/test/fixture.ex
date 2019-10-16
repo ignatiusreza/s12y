@@ -9,6 +9,12 @@ defmodule S12y.Fixture do
     end
   end
 
+  defmacro valid_dependencies_attrs do
+    quote do
+      %{"phoenix" => %{"repo" => "hexpm", "version" => "~> 1.4.9"}}
+    end
+  end
+
   defmacro malformed_project_attrs do
     fixture = read_fixture!("parsers/mix/malformed/input")
 
@@ -33,5 +39,11 @@ defmodule S12y.Fixture do
       |> Project.create_project()
 
     project
+  end
+
+  def configuration_fixture() do
+    project_fixture().configurations
+    |> List.first()
+    |> (&Project.get_configuration(&1.id)).()
   end
 end

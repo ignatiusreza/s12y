@@ -48,4 +48,39 @@ defmodule S12y.ProjectTest do
       assert Subscription.state() == []
     end
   end
+
+  describe "configurations" do
+    test "get_configuration/1 returns the configuration with given id" do
+      configuration = configuration_fixture()
+      assert Project.get_configuration(configuration.id).id == configuration.id
+    end
+  end
+
+  describe "dependencies" do
+    @valid_attrs valid_dependencies_attrs()
+    @invalid_attrs %{"phoenix" => %{}}
+
+    test "add_dependencies/2 record new dependency into a given project" do
+      {:ok, configuration} = configuration_fixture() |> Project.add_dependencies(@valid_attrs)
+      [dependency] = configuration.dependencies
+
+      assert 1 == length(configuration.dependencies)
+      assert dependency.name == "phoenix"
+      assert dependency.repo == "hexpm"
+      assert dependency.version == "~> 1.4.9"
+    end
+
+    test "add_dependencies/2 automatically remove duplicated dependency" do
+      {:ok, first} = configuration_fixture() |> Project.add_dependencies(@valid_attrs)
+      {:ok, second} = first |> Project.add_dependencies(@valid_attrs)
+
+      assert 1 == length(second.dependencies)
+      assert first.dependencies == second.dependencies
+    end
+
+    test "add_dependencies/2 with invalid data return error changeset" do
+      assert {:error, :dependencies, %Ecto.Changeset{}, %{}} =
+               Project.add_dependencies(configuration_fixture(), @invalid_attrs)
+    end
+  end
 end

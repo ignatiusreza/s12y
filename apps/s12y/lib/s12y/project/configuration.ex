@@ -9,6 +9,7 @@ defmodule S12y.Project.Configuration do
 
   schema "configurations" do
     belongs_to :project, Project.Identifier, type: :binary_id
+    many_to_many :dependencies, Project.Dependency, join_through: "configurations_dependencies"
 
     field :parser, :string
     field :filename, :string
