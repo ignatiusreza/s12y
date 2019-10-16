@@ -1,0 +1,6 @@
+name: 'Ignatius Reza'
+description: 'Custom action to run s12y ci job which requires database connection'
+author: 'Ignatius Reza'
+runs:
+  using: 'node12'
+  main: 'lib/main.js'
