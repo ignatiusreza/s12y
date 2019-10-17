@@ -9,11 +9,17 @@ defmodule S12y.Parsers.Worker.Supervisor do
 
   @impl true
   def init(:ok) do
-    children = [
+    Supervisor.init(children(Mix.env()), strategy: :one_for_all)
+  end
+
+  def children() do
+    [
       {Task.Supervisor, name: Worker.Task},
       {Worker.Runtime, name: Worker.Runtime}
     ]
-
-    Supervisor.init(children, strategy: :one_for_all)
   end
+
+  def children(:test), do: children()
+  # don't turn on subscription in test environment, since it makes unit testing harder
+  def children(_), do: children() ++ [Worker.Subscription]
 end

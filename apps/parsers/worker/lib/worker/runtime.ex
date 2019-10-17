@@ -1,6 +1,8 @@
 defmodule S12y.Parsers.Worker.Runtime do
   use GenServer
 
+  alias S12y.Project
+  alias S12y.PubSub.Broadcast
   alias S12y.Parsers.Worker
 
   # Client
@@ -17,7 +19,7 @@ defmodule S12y.Parsers.Worker.Runtime do
 
   @impl true
   def init(:ok) do
-    {:ok, nil}
+    {:ok, %{}}
   end
 
   @impl true
@@ -26,13 +28,14 @@ defmodule S12y.Parsers.Worker.Runtime do
     # so that it won't block the caller process, and so that caller won't crash in case the task failed
     {:ok, pid} = Task.Supervisor.start_child(Worker.Task, Worker.Task, :parse, [project])
     Process.monitor(pid)
-    {:reply, {:ok, pid}, state}
+    {:reply, {:ok, pid}, Map.put(state, pid, project)}
   end
 
   @impl true
-  def handle_info({:DOWN, _ref, :process, _pid, _error}, state) do
-    # TODO: handle parsing failed
-    {:noreply, state}
+  def handle_info({:DOWN, _ref, :process, pid, error}, state) do
+    unless error == :normal, do: Broadcast.project(:parse_failed, {Map.get(state, pid), error})
+
+    {:noreply, Map.delete(state, pid)}
   end
 
   @impl true

@@ -11,7 +11,9 @@ defmodule S12y.Parsers.Fixtures do
   defmacro generate(do: expression) do
     {:ok, fixtures} = File.ls(@fixtures_path)
 
-    Enum.map(fixtures, fn fixture ->
+    fixtures
+    |> Enum.reject(fn fixture -> String.starts_with?(fixture, "_") end)
+    |> Enum.map(fn fixture ->
       quote do
         describe unquote(fixture) do
           setup do

@@ -1,10 +1,10 @@
 defmodule S12y.Parsers.WorkerTest do
-  use S12y.Parsers.Worker.TestCase, async: true
+  use S12y.Parsers.Worker.TestCase
   import S12y.Fixture
 
   alias S12y.Parsers.Worker
 
-  describe "Worker.Registry" do
+  describe "Worker" do
     setup do
       project = project_fixture()
 
