@@ -12,7 +12,7 @@ defmodule S12y.Parsers.Worker.Task do
     project
     |> project_path
     |> CLI.change_path(fn ->
-      File.write(configuration.filename, configuration.content)
+      :ok = File.write(configuration.filename, configuration.content)
     end)
 
     project
@@ -21,7 +21,9 @@ defmodule S12y.Parsers.Worker.Task do
   defp invoke_parser(%{configurations: [configuration]} = project) do
     configuration.parser
     |> CLI.parser_path()
-    |> CLI.change_path(fn -> CLI.run("bin/run.sh", [project.id]) end)
+    |> CLI.change_path(fn ->
+      {:ok, _} = CLI.run("bin/run.sh", [project.id])
+    end)
   end
 
   def project_path(%{id: id, configurations: [configuration]}) do
