@@ -4,12 +4,14 @@ defmodule S12y.ProjectTest do
 
   alias S12y.Project
 
+  defmodule Subscription, do: use(S12y.PubSub.SubscriptionCase, topic: "project")
+
   describe "projects" do
     @valid_attrs valid_project_attrs()
     @invalid_attrs %{configurations: []}
 
     setup do
-      {:ok, _pid} = start_supervised(S12y.Project.SubscriptionTest)
+      {:ok, _pid} = start_supervised(Subscription)
 
       :ok
     end
@@ -33,7 +35,7 @@ defmodule S12y.ProjectTest do
     test "create_project/1 with valid data broadcast a project :created event" do
       assert {:ok, %{} = project} = Project.create_project(@valid_attrs)
 
-      assert Project.SubscriptionTest.state() == [{:created, project}]
+      assert Subscription.state() == [{:created, project}]
     end
 
     test "create_project/1 with invalid data returns error changeset" do
@@ -43,7 +45,7 @@ defmodule S12y.ProjectTest do
     test "create_project/1 with invalid data does not broadcast any event" do
       assert {:error, %Ecto.Changeset{}} = Project.create_project(@invalid_attrs)
 
-      assert Project.SubscriptionTest.state() == []
+      assert Subscription.state() == []
     end
   end
 end

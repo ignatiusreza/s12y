@@ -13,9 +13,13 @@ defmodule S12y.Parsers.MixTest do
     end
 
     test "parse input into output", %{input: input, output: output} do
-      {:ok, parsed} = Parsers.Mix.parse(input)
+      case Parsers.Mix.parse(input) do
+        {:ok, parsed} ->
+          assert Jason.decode!(parsed) == Jason.decode!(output)
 
-      assert Jason.decode!(parsed) == Jason.decode!(output)
+        {:error, {actual, _}} ->
+          assert actual == output
+      end
     end
   end
 end

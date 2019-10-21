@@ -12,7 +12,6 @@ defmodule S12y.Parsers.Fixtures do
     {:ok, fixtures} = File.ls(@fixtures_path)
 
     fixtures
-    |> Enum.reject(fn fixture -> String.starts_with?(fixture, "_") end)
     |> Enum.map(fn fixture ->
       quote do
         describe unquote(fixture) do
