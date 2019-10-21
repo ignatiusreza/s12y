@@ -4,9 +4,11 @@ defmodule S12y.Parsers.Worker.TaskTest do
 
   alias S12y.Parsers.Worker
 
+  defmodule Subscription, do: use(S12y.PubSub.SubscriptionCase, topic: "project")
+
   describe "Worker.Task" do
     setup do
-      start_supervised(Worker.SubscriptionTest)
+      {:ok, _pid} = start_supervised(Subscription)
 
       :ok
     end
@@ -14,9 +16,9 @@ defmodule S12y.Parsers.Worker.TaskTest do
     test "parsing supported project configurations broadcast parsed result" do
       project = project_fixture()
 
-      assert [] = Worker.SubscriptionTest.reset()
+      assert [] = Subscription.reset()
       assert {:ok, _} = Worker.Task.parse(project)
-      assert [{:parsed, {project, "{}\n"}}] == Worker.SubscriptionTest.state()
+      assert [{:parsed, {project, "{}\n"}}] == Subscription.state()
     end
 
     @tag :docker
@@ -30,9 +32,9 @@ defmodule S12y.Parsers.Worker.TaskTest do
           (stdlib) erl_eval.erl:680: :erl_eval.do_apply/6
       """
 
-      assert [] == Worker.SubscriptionTest.reset()
+      assert [] == Subscription.reset()
       assert {:error, {error, 1}} == Worker.Task.parse(project)
-      assert [{:parse_failed, {project, {error, 1}}}] == Worker.SubscriptionTest.state()
+      assert [{:parse_failed, {project, {error, 1}}}] == Subscription.state()
     end
   end
 end
