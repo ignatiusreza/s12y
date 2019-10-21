@@ -10,7 +10,7 @@ defmodule S12y.Fixture do
   end
 
   defmacro malformed_project_attrs do
-    fixture = read_fixture!("parsers/mix/_malformed/input")
+    fixture = read_fixture!("parsers/mix/malformed/input")
 
     quote do
       %{configurations: [%{filename: "mix.exs", content: unquote(fixture)}]}

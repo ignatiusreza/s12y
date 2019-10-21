@@ -24,13 +24,7 @@ defmodule S12y.Parsers.Worker.TaskTest do
     @tag :docker
     test "parsing malformed project configurations broadcast parse_failed" do
       project = project_fixture(malformed_project_attrs())
-
-      error = """
-      ** (CompileError) mix.exs:9: undefined function deps/0
-          (elixir) src/elixir_locals.erl:108: :elixir_locals.\"-ensure_no_undefined_local/3-lc$^0/1-0-\"/2
-          (elixir) src/elixir_locals.erl:109: anonymous fn/3 in :elixir_locals.ensure_no_undefined_local/3
-          (stdlib) erl_eval.erl:680: :erl_eval.do_apply/6
-      """
+      error = read_fixture!("parsers/mix/malformed/output")
 
       assert [] == Subscription.reset()
       assert {:error, {error, 1}} == Worker.Task.parse(project)
