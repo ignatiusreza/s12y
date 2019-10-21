@@ -8,8 +8,8 @@ defmodule S12y.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      # Start the Ecto repository
-      S12y.Repo
+      S12y.Repo,
+      {Phoenix.PubSub.PG2, name: S12y.PubSub}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

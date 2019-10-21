@@ -13,8 +13,13 @@ defmodule S12y.Parsers.Mix.Parser do
   end
 
   defp run(parser) do
-    {out, 0} = System.cmd("elixir", [script()], cd: parser.path)
-    out
+    case System.cmd("elixir", [script()], cd: parser.path, stderr_to_stdout: true) do
+      {output, 0} ->
+        {:ok, output}
+
+      error ->
+        {:error, error}
+    end
   end
 
   defp copy_parser_script!(parser) do

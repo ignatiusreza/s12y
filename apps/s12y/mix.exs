@@ -33,7 +33,8 @@ defmodule S12y.MixProject do
   defp deps do
     [
       {:ecto_sql, "~> 3.1"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:phoenix_pubsub, "~> 1.1"}
     ]
   end
 

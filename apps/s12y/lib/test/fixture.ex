@@ -9,6 +9,14 @@ defmodule S12y.Fixture do
     end
   end
 
+  defmacro malformed_project_attrs do
+    fixture = read_fixture!("parsers/mix/_malformed/input")
+
+    quote do
+      %{configurations: [%{filename: "mix.exs", content: unquote(fixture)}]}
+    end
+  end
+
   @fixtures_path Path.expand("../../../../fixtures", __DIR__)
   def fixture_path(path), do: Path.expand(path, @fixtures_path)
 
