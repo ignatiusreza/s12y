@@ -5,30 +5,37 @@ defmodule S12y.Parsers.Worker.Task do
   def parse(project) do
     project
     |> prepare_project
+    |> write_configuration
     |> invoke_parser
   end
 
-  defp prepare_project(%{configurations: [configuration]} = project) do
+  defp prepare_project(project) do
+    :ok =
+      project
+      |> project_path
+      |> File.mkdir_p()
+
     project
-    |> project_path
-    |> CLI.change_path(fn ->
-      :ok = File.write(configuration.filename, configuration.content)
-    end)
+  end
+
+  defp write_configuration(%{configurations: [configuration]} = project) do
+    :ok =
+      project
+      |> project_path(configuration.filename)
+      |> File.write(configuration.content)
 
     project
   end
 
   defp invoke_parser(%{configurations: [configuration]} = project) do
-    configuration.parser
-    |> CLI.parser_path()
-    |> CLI.change_path(fn ->
-      {:ok, _} = CLI.run("bin/run.sh", [project.id])
-    end)
+    {:ok, _} =
+      configuration.parser
+      |> CLI.parser_path()
+      |> (fn path -> CLI.run("bin/run.sh", [project.id], cd: path) end).()
   end
 
-  def project_path(%{id: id, configurations: [configuration]}) do
-    configuration.parser
-    |> CLI.parser_path()
-    |> (&Path.expand("tmp/#{id}", &1)).()
-  end
+  def project_path(project, filename), do: Path.expand(filename, project_path(project))
+
+  def project_path(%{id: id, configurations: [configuration]}),
+    do: CLI.parser_path(configuration.parser, "tmp/#{id}")
 end
