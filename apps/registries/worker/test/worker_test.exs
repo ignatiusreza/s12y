@@ -1,8 +1,8 @@
-defmodule S12y.Parsers.WorkerTest do
-  use S12y.Parsers.Worker.TestCase
+defmodule S12y.Registries.WorkerTest do
+  use S12y.Registries.Worker.TestCase
   import S12y.Fixture
 
-  alias S12y.Parsers.Worker
+  alias S12y.Registries.Worker
 
   describe "Worker" do
     setup do

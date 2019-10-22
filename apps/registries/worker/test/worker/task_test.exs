@@ -1,8 +1,8 @@
-defmodule S12y.Parsers.Worker.TaskTest do
-  use S12y.Parsers.Worker.TestCase
+defmodule S12y.Registries.Worker.TaskTest do
+  use S12y.Registries.Worker.TestCase
   import S12y.Fixture
 
-  alias S12y.Parsers.Worker
+  alias S12y.Registries.Worker
 
   defmodule Subscription, do: use(S12y.PubSub.SubscriptionCase, topic: "project")
 

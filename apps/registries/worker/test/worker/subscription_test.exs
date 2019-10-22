@@ -1,8 +1,8 @@
-defmodule S12y.Parsers.Worker.SubscriptionTest do
-  use S12y.Parsers.Worker.TestCase
+defmodule S12y.Registries.Worker.SubscriptionTest do
+  use S12y.Registries.Worker.TestCase
   import S12y.Fixture
 
-  alias S12y.Parsers.Worker
+  alias S12y.Registries.Worker
   alias S12y.Project
 
   describe "Worker.Subscription.handle_message(:parsed)" do

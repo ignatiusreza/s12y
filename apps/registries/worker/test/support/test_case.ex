@@ -1,4 +1,4 @@
-defmodule S12y.Parsers.Worker.TestCase do
+defmodule S12y.Registries.Worker.TestCase do
   use ExUnit.CaseTemplate
 
   using do
@@ -8,7 +8,7 @@ defmodule S12y.Parsers.Worker.TestCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import S12y.Parsers.Worker.TestCase
+      import S12y.Registries.Worker.TestCase
     end
   end
 

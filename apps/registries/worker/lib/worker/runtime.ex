@@ -1,8 +1,8 @@
-defmodule S12y.Parsers.Worker.Runtime do
+defmodule S12y.Registries.Worker.Runtime do
   use GenServer
 
   alias S12y.PubSub.Broadcast
-  alias S12y.Parsers.Worker
+  alias S12y.Registries.Worker
 
   # Client
 

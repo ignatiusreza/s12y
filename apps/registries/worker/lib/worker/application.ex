@@ -1,7 +1,7 @@
-defmodule S12y.Parsers.Worker.Application do
+defmodule S12y.Registries.Worker.Application do
   use Application
 
-  alias S12y.Parsers.Worker
+  alias S12y.Registries.Worker
 
   @impl true
   def start(_type, _args) do

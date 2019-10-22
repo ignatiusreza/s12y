@@ -1,4 +1,4 @@
-defmodule S12y.Parsers.Worker.Task do
+defmodule S12y.Registries.Worker.Task do
   alias S12y.CLI
   alias S12y.PubSub.Broadcast
 

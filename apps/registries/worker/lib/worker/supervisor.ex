@@ -1,7 +1,7 @@
-defmodule S12y.Parsers.Worker.Supervisor do
+defmodule S12y.Registries.Worker.Supervisor do
   use Supervisor
 
-  alias S12y.Parsers.Worker
+  alias S12y.Registries.Worker
 
   def start_link(opts) do
     Supervisor.start_link(__MODULE__, :ok, opts)

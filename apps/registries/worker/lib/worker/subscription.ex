@@ -1,12 +1,12 @@
-defmodule S12y.Parsers.Worker.Subscription do
+defmodule S12y.Registries.Worker.Subscription do
   use S12y.PubSub.Subscription, topic: "project"
 
-  alias S12y.Parsers
+  alias S12y.Registries
   alias S12y.Project
 
   # CRUD
   def handle_message(:created, %Project.Identifier{} = project) do
-    Parsers.Worker.parse(project)
+    Registries.Worker.parse(project)
   end
 
   # Parsing

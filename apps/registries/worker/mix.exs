@@ -1,9 +1,9 @@
-defmodule S12y.Parsers.Worker.MixProject do
+defmodule S12y.Registries.Worker.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :s12y_parsers_worker,
+      app: :s12y_registries_worker,
       version: "0.1.0",
       elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -16,7 +16,7 @@ defmodule S12y.Parsers.Worker.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {S12y.Parsers.Worker.Application, []}
+      mod: {S12y.Registries.Worker.Application, []}
     ]
   end
 
