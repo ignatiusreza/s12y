@@ -51,8 +51,9 @@ defmodule S12y.ProjectTest do
 
   describe "configurations" do
     test "get_configuration/1 returns the configuration with given id" do
-      configuration = configuration_fixture()
-      assert Project.get_configuration(configuration.id).id == configuration.id
+      with {:ok, %{configuration: configuration}} <- configuration_fixture() do
+        assert Project.get_configuration(configuration.id).id == configuration.id
+      end
     end
   end
 
@@ -61,26 +62,30 @@ defmodule S12y.ProjectTest do
     @invalid_attrs %{"phoenix" => %{}}
 
     test "add_dependencies/2 record new dependency into a given project" do
-      {:ok, configuration} = configuration_fixture() |> Project.add_dependencies(@valid_attrs)
-      [dependency] = configuration.dependencies
-
-      assert 1 == length(configuration.dependencies)
-      assert dependency.name == "phoenix"
-      assert dependency.repo == "hexpm"
-      assert dependency.version == "~> 1.4.9"
+      with {:ok, %{configuration: configuration}} <- configuration_fixture(),
+           {:ok, configuration} <- Project.add_dependencies(configuration, @valid_attrs),
+           [dependency] <- configuration.dependencies do
+        assert 1 == length(configuration.dependencies)
+        assert dependency.name == "phoenix"
+        assert dependency.repo == "hexpm"
+        assert dependency.version == "~> 1.4.9"
+      end
     end
 
     test "add_dependencies/2 automatically remove duplicated dependency" do
-      {:ok, first} = configuration_fixture() |> Project.add_dependencies(@valid_attrs)
-      {:ok, second} = first |> Project.add_dependencies(@valid_attrs)
-
-      assert 1 == length(second.dependencies)
-      assert first.dependencies == second.dependencies
+      with {:ok, %{configuration: configuration}} <- configuration_fixture(),
+           {:ok, first} <- Project.add_dependencies(configuration, @valid_attrs),
+           {:ok, second} <- Project.add_dependencies(first, @valid_attrs) do
+        assert 1 == length(second.dependencies)
+        assert first.dependencies == second.dependencies
+      end
     end
 
     test "add_dependencies/2 with invalid data return error changeset" do
-      assert {:error, :dependencies, %Ecto.Changeset{}, %{}} =
-               Project.add_dependencies(configuration_fixture(), @invalid_attrs)
+      with {:ok, %{configuration: configuration}} = configuration_fixture() do
+        assert {:error, :dependencies, %Ecto.Changeset{}, %{}} =
+                 Project.add_dependencies(configuration, @invalid_attrs)
+      end
     end
   end
 end
