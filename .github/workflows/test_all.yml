@@ -79,6 +79,29 @@ jobs:
           mix deps.get
           mix test
 
+  registries-worker:
+    runs-on: ubuntu-latest
+
+    container:
+      image: elixir:1.9.1-slim
+
+    services:
+      postgres:
+        image: postgres:12-alpine
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ./.github/actions/database
+      - name: Run Tests
+        working-directory: apps/registries/worker
+        run: |
+          mix deps.get
+          mix test
+
   s12y:
     runs-on: ubuntu-latest
 
