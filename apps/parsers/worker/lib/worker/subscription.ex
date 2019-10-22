@@ -12,10 +12,11 @@ defmodule S12y.Parsers.Worker.Subscription do
   # Parsing
 
   def handle_message(:parsed, {%Project.Identifier{} = project, parsed}) do
-    # TODO: save parsed result to database
+    Project.parsed(project, Jason.decode!(parsed))
   end
 
-  def handle_message(:parse_failed, {%Project.Identifier{} = project, error}) do
-    # TODO: mark project as failed to be parsed?
+  def handle_message(:parse_failed, {%Project.Identifier{} = project, {error, _}})
+      when is_bitstring(error) do
+    Project.parse_failed(project, error)
   end
 end

@@ -1,7 +1,6 @@
 defmodule S12y.Parsers.Worker.Runtime do
   use GenServer
 
-  alias S12y.Project
   alias S12y.PubSub.Broadcast
   alias S12y.Parsers.Worker
 
