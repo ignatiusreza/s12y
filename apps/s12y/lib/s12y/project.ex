@@ -126,7 +126,9 @@ defmodule S12y.Project do
       end)
       |> Repo.transaction()
 
-    with {:ok, %{configuration: configuration}} <- multi do
+    with {:ok, %{configuration: configuration, dependencies: dependencies}} <- multi do
+      broadcast(dependencies, :created)
+
       {:ok, configuration}
     end
   end
@@ -158,8 +160,10 @@ defmodule S12y.Project do
       end)
       |> Repo.transaction()
 
-    with {:ok, %{parent: dependency}} <- multi do
-      {:ok, dependency}
+    with {:ok, %{parent: parent, children: children}} <- multi do
+      broadcast(children, :created)
+
+      {:ok, parent}
     end
   end
 
@@ -234,4 +238,8 @@ defmodule S12y.Project do
   end
 
   defp broadcast({:error, %Ecto.Changeset{}} = passthrough, _), do: passthrough
+
+  defp broadcast(dependencies, action) do
+    Enum.each(dependencies, &Broadcast.dependency(action, &1))
+  end
 end

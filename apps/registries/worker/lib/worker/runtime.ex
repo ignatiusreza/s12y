@@ -10,8 +10,8 @@ defmodule S12y.Registries.Worker.Runtime do
     GenServer.start_link(__MODULE__, :ok, args)
   end
 
-  def parse(project) do
-    GenServer.call(__MODULE__, {:parse, project})
+  def lookup(dependency) do
+    GenServer.call(__MODULE__, {:lookup, dependency})
   end
 
   # Server
@@ -22,17 +22,19 @@ defmodule S12y.Registries.Worker.Runtime do
   end
 
   @impl true
-  def handle_call({:parse, project}, _from, state) do
+  def handle_call({:lookup, dependency}, _from, state) do
     # The actual parsing process is done asynchronously inside a worker task
     # so that it won't block the caller process, and so that caller won't crash in case the task failed
-    {:ok, pid} = Task.Supervisor.start_child(Worker.Task, Worker.Task, :parse, [project])
+    {:ok, pid} = Task.Supervisor.start_child(Worker.Task, Worker.Task, :lookup, [dependency])
     Process.monitor(pid)
-    {:reply, {:ok, pid}, Map.put(state, pid, project)}
+    {:reply, {:ok, pid}, Map.put(state, pid, dependency)}
   end
 
   @impl true
   def handle_info({:DOWN, _ref, :process, pid, error}, state) do
-    unless error == :normal, do: Broadcast.project(:parse_failed, {Map.get(state, pid), error})
+    unless error == :normal do
+      Broadcast.dependency(:lookup_failed, {Map.get(state, pid), error})
+    end
 
     {:noreply, Map.delete(state, pid)}
   end

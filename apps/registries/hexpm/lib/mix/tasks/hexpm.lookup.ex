@@ -5,8 +5,18 @@ defmodule Mix.Tasks.Hexpm.Lookup do
   def run([package, version]) do
     HTTPoison.start()
 
-    S12y.Registries.Hexpm.lookup(package, version)
-    |> Jason.encode!()
-    |> IO.puts()
+    case S12y.Registries.Hexpm.lookup(package, version) do
+      {:ok, package} ->
+        package
+        |> Jason.encode!()
+        |> IO.puts()
+
+      {:error, error} ->
+        error
+        |> Jason.encode!()
+        |> IO.puts()
+
+        exit({:shutdown, 1})
+    end
   end
 end

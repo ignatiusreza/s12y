@@ -11,8 +11,8 @@ defmodule S12y.Registries.WorkerTest do
       %{project: project}
     end
 
-    test "parse runs", %{project: project} do
-      assert {:ok, _pid} = Worker.parse(project)
+    test "lookup runs", %{project: project} do
+      assert {:ok, _pid} = Worker.lookup(project)
     end
   end
 end

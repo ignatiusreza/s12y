@@ -13,5 +13,8 @@ defmodule S12y.PubSub do
 
     def project(event, payload) when is_atom(event),
       do: PubSub.broadcast("project", {event, payload})
+
+    def dependency(event, payload) when is_atom(event),
+      do: PubSub.broadcast("dependency", {event, payload})
   end
 end
