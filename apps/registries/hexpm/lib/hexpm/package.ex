@@ -3,28 +3,39 @@ defmodule S12y.Registries.Hexpm.Package do
   defstruct [:response, :name, :version, :repo, dependencies: [], maintainers: []]
 
   def cache_response(package, {:ok, %HTTPoison.Response{status_code: 200, body: body}}) do
-    %{package | response: Jason.decode!(body)}
+    {:ok, %{package | response: Jason.decode!(body)}}
   end
 
-  def update_version(package) do
-    %{package | version: matching_release(package)["version"]}
+  def cache_response(package, {:ok, %HTTPoison.Response{status_code: _, body: body}}) do
+    {:error, %{package | response: Jason.decode!(body)}}
   end
 
-  def update_repo(package) do
-    %{package | repo: github_link(package)}
+  def update_version({:error, package}), do: {:error, package}
+
+  def update_version({:ok, package}) do
+    {:ok, %{package | version: matching_release(package)["version"]}}
   end
 
-  def update_maintainer(package) do
-    %{package | maintainers: Map.merge(owners(package), maintainers(package))}
+  def update_repo({:error, package}), do: {:error, package}
+
+  def update_repo({:ok, package}) do
+    {:ok, %{package | repo: github_link(package)}}
   end
 
-  def update_dependencies(package) do
-    %{package | dependencies: dependencies(package)}
+  def update_maintainer({:error, package}), do: {:error, package}
+
+  def update_maintainer({:ok, package}) do
+    {:ok, %{package | maintainers: Map.merge(owners(package), maintainers(package))}}
   end
 
-  def clear_response(package) do
-    %{package | response: nil}
+  def update_dependencies({:error, package}), do: {:error, package}
+
+  def update_dependencies({:ok, package}) do
+    {:ok, %{package | dependencies: dependencies(package)}}
   end
+
+  def clear_response({:error, package}), do: {:error, package.response}
+  def clear_response({:ok, package}), do: {:ok, %{package | response: nil}}
 
   defp matching_release(package) do
     package.response["releases"]

@@ -20,7 +20,9 @@ defmodule S12y.Registries.Hexpm.Registry do
     |> Package.clear_response()
   end
 
-  defp lookup_version(package) do
+  defp lookup_version({:error, package}), do: {:error, package}
+
+  defp lookup_version({:ok, package}) do
     package
     |> Package.cache_response(HTTPoison.get(version_endpoint(package)))
     |> Package.update_dependencies()

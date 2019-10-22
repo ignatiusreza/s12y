@@ -6,18 +6,24 @@ defmodule S12y.Registries.HexpmTest do
   alias S12y.Registries
 
   generate do
-    test "parse input into output", %{fixture: fixture} do
+    test "lookup certain package up on the registry", %{fixture: fixture} do
       {:ok, input} = read_input(fixture)
       {:ok, output} = read_output(fixture)
 
       [package, version] = Jason.decode!(input)
 
-      parsed =
+      response =
         use_cassette fixture do
           Registries.Hexpm.lookup(package, version)
         end
 
-      assert normalize(parsed) == Jason.decode!(output)
+      case response do
+        {:ok, detail} ->
+          assert normalize(detail) == Jason.decode!(output)
+
+        {:error, error} ->
+          assert error == Jason.decode!(output)
+      end
     end
   end
 
