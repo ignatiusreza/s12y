@@ -1,0 +1,33 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": [],
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://hex.pm/api/packages/unknown"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"message\":\"Page not found\",\"status\":404}",
+      "headers": {
+        "cache-control": "max-age=0, private, must-revalidate",
+        "content-length": "41",
+        "content-type": "application/vnd.hex+json; charset=utf-8",
+        "date": "Tue, 22 Oct 2019 06:23:41 GMT",
+        "server": "Cowboy",
+        "strict-transport-security": "max-age=31536000",
+        "vary": "accept-encoding",
+        "x-ratelimit-limit": "100",
+        "x-ratelimit-remaining": "98",
+        "x-ratelimit-reset": "1571725440",
+        "x-request-id": "Fc_j8a1RKthGeyoADcqB",
+        "Via": "1.1 google",
+        "Alt-Svc": "clear"
+      },
+      "status_code": 404,
+      "type": "ok"
+    }
+  }
+]
