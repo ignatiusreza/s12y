@@ -27,6 +27,7 @@ defmodule S12y.Parsers.Worker.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:jason, "~> 1.1"},
       {:s12y_cli, path: Path.expand("../../cli", __DIR__)},
       {:s12y, path: Path.expand("../../s12y", __DIR__)}
     ]

@@ -27,6 +27,36 @@ defmodule S12y.Project do
     |> broadcast(:created)
   end
 
+  @doc """
+  Update project, mark it as parsed, and record its dependencies
+  """
+  def parsed(project, dependencies) do
+    %{configurations: [configuration]} = project
+
+    multi =
+      Multi.new()
+      |> Multi.run(:configuration, fn _, _ -> add_dependencies(configuration, dependencies) end)
+      |> Multi.run(:project, fn _, _ ->
+        project
+        |> Ecto.Changeset.change(%{parsed_at: current_time()})
+        |> Repo.update()
+      end)
+      |> Repo.transaction()
+
+    with {:ok, %{project: project}} <- multi do
+      {:ok, project}
+    end
+  end
+
+  def parse_failed(project, error) do
+    project
+    |> Ecto.Changeset.change(%{parse_failed_at: current_time(), parse_error: error})
+    |> Repo.update()
+  end
+
+  def parsed?(project), do: !!project.parsed_at
+  def parse_failed?(project), do: !!project.parse_failed_at
+
   ### CONFIGURATION
   @doc """
   Lookup a single project's configuration by id.
@@ -74,6 +104,23 @@ defmodule S12y.Project do
     end
   end
 
+  def count_dependencies do
+    from(c in Project.Dependency)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_dependencies(%Project.Identifier{} = project) do
+    ids = Enum.map(project.configurations, & &1.id)
+
+    from(c in "configurations_dependencies", where: c.configuration_id in ^ids)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_dependencies(%Project.Configuration{} = configuration) do
+    from(c in "configurations_dependencies", where: c.configuration_id == ^configuration.id)
+    |> Repo.aggregate(:count, :id)
+  end
+
   defp find_or_create_dependency(attrs) do
     find_dependency(attrs) || create_dependency(attrs)
   end
@@ -104,8 +151,12 @@ defmodule S12y.Project do
     |> Repo.insert()
   end
 
-
   ### HELPERS
+
+  defp current_time do
+    DateTime.utc_now()
+    |> DateTime.truncate(:second)
+  end
 
   defp broadcast({:ok, project} = passthrough, action) do
     Broadcast.project(action, project)

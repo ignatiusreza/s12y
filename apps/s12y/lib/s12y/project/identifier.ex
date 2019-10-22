@@ -11,6 +11,10 @@ defmodule S12y.Project.Identifier do
   schema "projects" do
     has_many :configurations, Configuration, foreign_key: :project_id
 
+    field :parsed_at, :utc_datetime
+    field :parse_failed_at, :utc_datetime
+    field :parse_error, :string
+
     timestamps()
   end
 
