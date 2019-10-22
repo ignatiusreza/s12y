@@ -42,8 +42,13 @@ defmodule S12y.Fixture do
   end
 
   def configuration_fixture() do
-    project_fixture().configurations
-    |> List.first()
-    |> (&Project.get_configuration(&1.id)).()
+    project = project_fixture()
+
+    configuration =
+      project.configurations
+      |> List.first()
+      |> (&Project.get_configuration(&1.id)).()
+
+    {:ok, %{project: project, configuration: configuration}}
   end
 end
