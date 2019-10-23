@@ -11,6 +11,14 @@ defmodule S12y.Project.Dependency do
     many_to_many :configurations, Project.Configuration,
       join_through: "configurations_dependencies"
 
+    many_to_many :parents, Project.Dependency,
+      join_through: "dependencies_dependencies",
+      join_keys: [child_id: :id, parent_id: :id]
+
+    many_to_many :children, Project.Dependency,
+      join_through: "dependencies_dependencies",
+      join_keys: [parent_id: :id, child_id: :id]
+
     field :name, :string
     field :repo, :string
     field :version, :string

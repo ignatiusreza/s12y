@@ -15,6 +15,15 @@ defmodule S12y.Fixture do
     end
   end
 
+  defmacro valid_nested_dependencies_attrs do
+    quote do
+      %{
+        "plug" => %{"repo" => "hexpm", "version" => "~> 1.8.1 or ~> 1.9"},
+        "plug_cowboy" => %{"repo" => "hexpm", "version" => "~> 1.0 or ~> 2.0"}
+      }
+    end
+  end
+
   defmacro malformed_project_attrs do
     fixture = read_fixture!("parsers/mix/malformed/input")
 
@@ -50,5 +59,13 @@ defmodule S12y.Fixture do
       |> (&Project.get_configuration(&1.id)).()
 
     {:ok, %{project: project, configuration: configuration}}
+  end
+
+  def dependency_fixture(attrs \\ valid_dependencies_attrs()) do
+    {:ok, %{project: project, configuration: configuration}} = configuration_fixture()
+    {:ok, configuration} = Project.add_dependencies(configuration, attrs)
+    dependency = List.first(configuration.dependencies)
+
+    {:ok, %{project: project, configuration: configuration, dependency: dependency}}
   end
 end
