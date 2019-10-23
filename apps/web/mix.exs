@@ -41,7 +41,13 @@ defmodule Web.MixProject do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:plug_cowboy, "~> 2.0"},
-      {:s12y, path: Path.expand("../s12y", __DIR__)}
+      {:s12y, path: sibling("s12y")},
+      {:s12y_parsers_worker, path: sibling("parsers/worker")},
+      {:s12y_registries_worker, path: sibling("registries/worker")}
     ]
+  end
+
+  defp sibling(path) do
+    Path.expand(path, Path.expand("..", __DIR__))
   end
 end
