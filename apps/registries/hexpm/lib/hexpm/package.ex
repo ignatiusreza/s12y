@@ -67,8 +67,12 @@ defmodule S12y.Registries.Hexpm.Package do
   end
 
   defp maintainers(package) do
-    Enum.reduce(package.response["meta"]["maintainers"], %{}, fn owner, acc ->
-      Map.put(acc, owner["username"], %{email: owner["email"], url: owner["url"]})
+    Enum.reduce(package.response["meta"]["maintainers"], %{}, fn
+      owner, acc when is_map(owner) ->
+        Map.put(acc, owner["username"], %{email: owner["email"], url: owner["url"]})
+
+      owner, acc when is_bitstring(owner) ->
+        Map.put(acc, owner, %{})
     end)
   end
 

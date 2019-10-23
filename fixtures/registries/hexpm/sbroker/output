@@ -1,0 +1,13 @@
+{
+  "name": "sbroker",
+  "version": "1.0.0",
+  "repo": "https://github.com/fishcakez/sbroker",
+  "dependencies": {},
+  "maintainers": {
+    "James Fish": {},
+    "fishcakez": {
+      "email": "james@fishcakez.com",
+      "url": "https://hex.pm/api/users/fishcakez"
+    }
+  }
+}
