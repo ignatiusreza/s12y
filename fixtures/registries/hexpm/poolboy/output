@@ -1,0 +1,19 @@
+{
+  "name": "poolboy",
+  "version": "1.5.2",
+  "repo": "https://github.com/devinus/poolboy",
+  "dependencies": {},
+  "maintainers": {
+    "Andrew Thompson": {},
+    "Devin Torres": {},
+    "Kurt Williams": {},
+    "devinus": {
+      "email": "d@devinus.io",
+      "url": "https://hex.pm/api/users/devinus"
+    },
+    "vagabond": {
+      "email": "andrew@hijacked.us",
+      "url": "https://hex.pm/api/users/vagabond"
+    }
+  }
+}
