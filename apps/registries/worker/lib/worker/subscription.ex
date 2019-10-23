@@ -12,9 +12,11 @@ defmodule S12y.Registries.Worker.Subscription do
   # Parsing
 
   def handle_message(:lookup, {%Project.Dependency{} = dependency, details}) do
+    Project.lookup(dependency, Jason.decode!(details))
   end
 
   def handle_message(:lookup_failed, {%Project.Dependency{} = dependency, {error, _}})
       when is_bitstring(error) do
+    Project.lookup_failed(dependency, error)
   end
 end

@@ -30,6 +30,10 @@ defmodule S12y.Project.Dependency do
     field :repo, :string
     field :version, :string
 
+    field :lookup_at, :utc_datetime
+    field :lookup_failed_at, :utc_datetime
+    field :lookup_error, :string
+
     timestamps()
   end
 
@@ -40,4 +44,7 @@ defmodule S12y.Project.Dependency do
     |> put_change(:recently_persisted, true)
     |> validate_required(@required_fields)
   end
+
+  def lookup?(dependency), do: dependency.lookup_at
+  def lookup_failed?(dependency), do: dependency.lookup_failed_at
 end

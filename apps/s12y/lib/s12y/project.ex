@@ -194,6 +194,33 @@ defmodule S12y.Project do
     |> Repo.aggregate(:count, :id)
   end
 
+  @doc """
+  Update dependency details, recording child dependencies if exists
+  """
+  def lookup(dependency, details) do
+    multi =
+      Multi.new()
+      |> Multi.run(:dependencies, fn _, _ ->
+        add_dependencies(dependency, Map.get(details, "dependencies"))
+      end)
+      |> Multi.run(:dependency, fn _, _ ->
+        dependency
+        |> Ecto.Changeset.change(%{lookup_at: current_time()})
+        |> Repo.update()
+      end)
+      |> Repo.transaction()
+
+    with {:ok, %{dependency: dependency}} <- multi do
+      {:ok, dependency}
+    end
+  end
+
+  def lookup_failed(dependency, error) do
+    dependency
+    |> Ecto.Changeset.change(%{lookup_failed_at: current_time(), lookup_error: error})
+    |> Repo.update()
+  end
+
   defp find_or_create_dependency(attrs) do
     find_dependency(attrs) || create_dependency(attrs)
   end
