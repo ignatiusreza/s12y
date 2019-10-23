@@ -126,7 +126,9 @@ defmodule S12y.Project do
       end)
       |> Repo.transaction()
 
-    with {:ok, %{configuration: configuration}} <- multi do
+    with {:ok, %{configuration: configuration, dependencies: dependencies}} <- multi do
+      broadcast(dependencies, :created)
+
       {:ok, configuration}
     end
   end
@@ -158,8 +160,10 @@ defmodule S12y.Project do
       end)
       |> Repo.transaction()
 
-    with {:ok, %{parent: dependency}} <- multi do
-      {:ok, dependency}
+    with {:ok, %{parent: parent, children: children}} <- multi do
+      broadcast(children, :created)
+
+      {:ok, parent}
     end
   end
 
@@ -188,6 +192,33 @@ defmodule S12y.Project do
   def count_dependency_children(%Project.Dependency{} = dependency) do
     from(c in "dependencies_dependencies", where: c.parent_id == ^dependency.id)
     |> Repo.aggregate(:count, :id)
+  end
+
+  @doc """
+  Update dependency details, recording child dependencies if exists
+  """
+  def lookup(dependency, details) do
+    multi =
+      Multi.new()
+      |> Multi.run(:dependencies, fn _, _ ->
+        add_dependencies(dependency, Map.get(details, "dependencies"))
+      end)
+      |> Multi.run(:dependency, fn _, _ ->
+        dependency
+        |> Ecto.Changeset.change(%{lookup_at: current_time()})
+        |> Repo.update()
+      end)
+      |> Repo.transaction()
+
+    with {:ok, %{dependency: dependency}} <- multi do
+      {:ok, dependency}
+    end
+  end
+
+  def lookup_failed(dependency, error) do
+    dependency
+    |> Ecto.Changeset.change(%{lookup_failed_at: current_time(), lookup_error: error})
+    |> Repo.update()
   end
 
   defp find_or_create_dependency(attrs) do
@@ -234,4 +265,8 @@ defmodule S12y.Project do
   end
 
   defp broadcast({:error, %Ecto.Changeset{}} = passthrough, _), do: passthrough
+
+  defp broadcast(dependencies, action) do
+    Enum.each(dependencies, &Broadcast.dependency(action, &1))
+  end
 end

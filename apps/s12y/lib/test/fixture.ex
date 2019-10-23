@@ -32,6 +32,13 @@ defmodule S12y.Fixture do
     end
   end
 
+  defmacro unknown_dependency_attrs do
+    quote do
+      # Let's pray nobody publish this package :grin:
+      %{"unknown" => %{"repo" => "hexpm", "version" => "~> 0.0.1"}}
+    end
+  end
+
   @fixtures_path Path.expand("../../../../fixtures", __DIR__)
   def fixture_path(path), do: Path.expand(path, @fixtures_path)
 
@@ -62,10 +69,10 @@ defmodule S12y.Fixture do
   end
 
   def dependency_fixture(attrs \\ valid_dependencies_attrs()) do
-    {:ok, %{project: project, configuration: configuration}} = configuration_fixture()
-    {:ok, configuration} = Project.add_dependencies(configuration, attrs)
-    dependency = List.first(configuration.dependencies)
-
-    {:ok, %{project: project, configuration: configuration, dependency: dependency}}
+    with {:ok, %{project: project, configuration: configuration}} <- configuration_fixture(),
+         {:ok, configuration} <- Project.add_dependencies(configuration, attrs),
+         dependency <- List.first(configuration.dependencies) do
+      {:ok, %{project: project, configuration: configuration, dependency: dependency}}
+    end
   end
 end
