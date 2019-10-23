@@ -59,8 +59,28 @@ defmodule S12y.ProjectTest do
 
   describe "dependencies" do
     @valid_attrs valid_dependencies_attrs()
-    @valid_nested_attrs valid_nested_dependencies_attrs()
+    @nested_attrs valid_nested_dependencies_attrs()
+    @transient_attrs %{
+      "mime" => %{"repo" => "hexpm", "version" => "~> 1.0"},
+      "plug_crypto" => %{"repo" => "hexpm", "version" => "~> 1.0"}
+    }
     @invalid_attrs %{"phoenix" => %{}}
+
+    test "get_dependencies/1 return flatten dependencies when project are given" do
+      with {:ok, %{project: project, dependency: dependency}} <- dependency_fixture(),
+           {:ok, %{children: [child, _]}} <- Project.add_dependencies(dependency, @nested_attrs),
+           {:ok, _} <- Project.add_dependencies(child, @transient_attrs),
+           dependencies <- Project.get_dependencies(project),
+           dependencies <- Enum.map(dependencies, &Map.take(&1, [:name, :repo, :version])) do
+        assert [
+                 %{name: "phoenix", repo: "hexpm", version: "~> 1.4.9"},
+                 %{name: "plug", repo: "hexpm", version: "~> 1.8.1 or ~> 1.9"},
+                 %{name: "plug_cowboy", repo: "hexpm", version: "~> 1.0 or ~> 2.0"},
+                 %{name: "mime", repo: "hexpm", version: "~> 1.0"},
+                 %{name: "plug_crypto", repo: "hexpm", version: "~> 1.0"}
+               ] == dependencies
+      end
+    end
 
     test "add_dependencies/2 record new dependency into a given project's configuration" do
       with {:ok, %{configuration: configuration}} <- configuration_fixture(),
@@ -78,7 +98,7 @@ defmodule S12y.ProjectTest do
         assert 0 == Project.count_dependency_parents(dependency)
         assert 0 == Project.count_dependency_children(dependency)
 
-        {:ok, dependency} = Project.add_dependencies(dependency, @valid_nested_attrs)
+        {:ok, dependency} = Project.add_dependencies(dependency, @nested_attrs)
 
         assert 0 == Project.count_dependency_parents(dependency)
         assert 2 == Project.count_dependency_children(dependency)

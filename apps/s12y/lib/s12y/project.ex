@@ -79,6 +79,27 @@ defmodule S12y.Project do
   end
 
   @doc """
+  Return flatten dependencies of a single project.
+  """
+  def get_dependencies(%Project.Identifier{} = project) do
+    initial =
+      Project.Dependency
+      |> join(:inner, [d], c in assoc(d, :configurations))
+      |> where([d, c], c.project_id == ^project.id)
+
+    recursion =
+      Project.Dependency
+      |> join(:inner, [d], ch in assoc(d, :children))
+
+    cte = initial |> union_all(^recursion)
+
+    Project.Dependency
+    |> recursive_ctes(true)
+    |> with_cte("dependency_tree", as: ^cte)
+    |> Repo.all()
+  end
+
+  @doc """
   Add dependencies into a given project's configuration.
   """
   def add_dependencies(%Project.Configuration{} = configuration, dependencies) do
