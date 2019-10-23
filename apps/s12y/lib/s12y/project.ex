@@ -70,9 +70,18 @@ defmodule S12y.Project do
   ### DEPENDENCY
 
   @doc """
+  Lookup a single project's dependency by id.
+  """
+  def get_dependency(id) do
+    Project.Dependency
+    |> Repo.get(id)
+    |> Repo.preload(:children)
+  end
+
+  @doc """
   Add dependencies into a given project's configuration.
   """
-  def add_dependencies(configuration, dependencies) do
+  def add_dependencies(%Project.Configuration{} = configuration, dependencies) do
     multi =
       Multi.new()
       |> Multi.run(:dependencies, fn _, _ ->
@@ -87,10 +96,7 @@ defmodule S12y.Project do
       |> Multi.run(:configuration, fn _multi, %{dependencies: dependencies} ->
         # preload dependencies
         configuration = Project.get_configuration(configuration.id)
-
-        dependencies =
-          (dependencies ++ configuration.dependencies)
-          |> Enum.uniq_by(& &1.id)
+        dependencies = (dependencies ++ configuration.dependencies) |> Enum.uniq_by(& &1.id)
 
         configuration
         |> Ecto.Changeset.change()
@@ -101,6 +107,38 @@ defmodule S12y.Project do
 
     with {:ok, %{configuration: configuration}} <- multi do
       {:ok, configuration}
+    end
+  end
+
+  @doc """
+  Add nested dependencies into a dependency.
+  """
+  def add_dependencies(%Project.Dependency{} = dependency, dependencies) do
+    multi =
+      Multi.new()
+      |> Multi.run(:children, fn _, _ ->
+        dependencies
+        |> Enum.reduce({:ok, []}, fn {name, dependency}, prev ->
+          with {:ok, children} <- prev,
+               {:ok, child} <- find_or_create_dependency(Map.put(dependency, "name", name)) do
+            {:ok, [child | children]}
+          end
+        end)
+      end)
+      |> Multi.run(:parent, fn _, %{children: children} ->
+        # preload children
+        dependency = Project.get_dependency(dependency.id)
+        children = (children ++ dependency.children) |> Enum.uniq_by(& &1.id)
+
+        dependency
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:children, children)
+        |> Repo.update()
+      end)
+      |> Repo.transaction()
+
+    with {:ok, %{parent: dependency}} <- multi do
+      {:ok, dependency}
     end
   end
 
@@ -118,6 +156,16 @@ defmodule S12y.Project do
 
   def count_dependencies(%Project.Configuration{} = configuration) do
     from(c in "configurations_dependencies", where: c.configuration_id == ^configuration.id)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_dependency_parents(%Project.Dependency{} = dependency) do
+    from(c in "dependencies_dependencies", where: c.child_id == ^dependency.id)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_dependency_children(%Project.Dependency{} = dependency) do
+    from(c in "dependencies_dependencies", where: c.parent_id == ^dependency.id)
     |> Repo.aggregate(:count, :id)
   end
 

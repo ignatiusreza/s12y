@@ -59,9 +59,10 @@ defmodule S12y.ProjectTest do
 
   describe "dependencies" do
     @valid_attrs valid_dependencies_attrs()
+    @valid_nested_attrs valid_nested_dependencies_attrs()
     @invalid_attrs %{"phoenix" => %{}}
 
-    test "add_dependencies/2 record new dependency into a given project" do
+    test "add_dependencies/2 record new dependency into a given project's configuration" do
       with {:ok, %{configuration: configuration}} <- configuration_fixture(),
            {:ok, configuration} <- Project.add_dependencies(configuration, @valid_attrs),
            [dependency] <- configuration.dependencies do
@@ -69,6 +70,18 @@ defmodule S12y.ProjectTest do
         assert dependency.name == "phoenix"
         assert dependency.repo == "hexpm"
         assert dependency.version == "~> 1.4.9"
+      end
+    end
+
+    test "add_dependencies/2 record nested dependency into a given dependency" do
+      with {:ok, %{dependency: dependency}} <- dependency_fixture() do
+        assert 0 == Project.count_dependency_parents(dependency)
+        assert 0 == Project.count_dependency_children(dependency)
+
+        {:ok, dependency} = Project.add_dependencies(dependency, @valid_nested_attrs)
+
+        assert 0 == Project.count_dependency_parents(dependency)
+        assert 2 == Project.count_dependency_children(dependency)
       end
     end
 
