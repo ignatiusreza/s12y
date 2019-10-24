@@ -1,21 +1,3 @@
-# Worker
+# S12y.Registries.Worker
 
-**TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `worker` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:worker, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/worker](https://hexdocs.pm/worker).
-
+Handle routing registry lookup request coming from S12y unto the appropriate registry for the given project.
