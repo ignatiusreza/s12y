@@ -82,7 +82,7 @@ defmodule S12y.Project do
   @doc """
   Return flatten dependencies of a single project.
   """
-  def get_dependencies(%Project.Identifier{} = project) do
+  def list_dependencies(%Project.Identifier{} = project) do
     dependencies_cte(project)
     |> Repo.all()
   end
@@ -264,7 +264,7 @@ defmodule S12y.Project do
   @doc """
   Get a flatten list of maintainers for a given project.
   """
-  def get_maintainers(%Project.Identifier{} = project) do
+  def list_maintainers(%Project.Identifier{} = project) do
     dependencies = project |> dependencies_cte() |> subquery()
 
     Project.Maintainer

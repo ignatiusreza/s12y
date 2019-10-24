@@ -25,6 +25,18 @@ defmodule Web.Resolvers.Project do
     {:ok, project.configurations}
   end
 
+  ### DEPENDENCIES
+
+  def list_dependencies(%Project.Identifier{} = project, _args, _resolution) do
+    {:ok, Project.list_dependencies(project)}
+  end
+
+  ### MAINTAINERS
+
+  def list_maintainers(%Project.Identifier{} = project, _args, _resolution) do
+    {:ok, Project.list_maintainers(project)}
+  end
+
   ### HELPERS
 
   defp read_uploaded_file(args) do
