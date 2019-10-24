@@ -8,6 +8,7 @@ import Debug exposing (todo)
 import File exposing (File)
 import Http
 import Json.Decode as Decode exposing (Decoder)
+import Json.Encode as Encode
 
 
 type alias HttpPost msg =
@@ -36,9 +37,14 @@ toHttpPost toMsg schema =
 
 toQueryRequest : (HttpResult decodesTo -> msg) -> List Field -> Decoder decodesTo -> HttpPost msg
 toQueryRequest toMsg fields decoder =
-    { body = todo "Add support for query request"
+    { body = toQueryBody fields
     , expect = expectJson toMsg decoder
     }
+
+
+toQueryBody : List Field -> Http.Body
+toQueryBody fields =
+    Http.jsonBody (Encode.object [ ( "query", Encode.string (Schema.serializeQuery fields) ) ])
 
 
 

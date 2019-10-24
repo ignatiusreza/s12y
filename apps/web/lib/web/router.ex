@@ -13,12 +13,6 @@ defmodule Web.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Web do
-    pipe_through :browser
-
-    get "/", PageController, :index
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", Web do
   #   pipe_through :api
@@ -28,5 +22,11 @@ defmodule Web.Router do
 
   if Mix.env() == :dev do
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Web.Schema
+  end
+
+  scope "/", Web do
+    pipe_through :browser
+
+    get "/*path", PageController, :index
   end
 end

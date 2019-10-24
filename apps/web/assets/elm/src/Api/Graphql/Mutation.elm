@@ -28,7 +28,11 @@ createProject arguments =
         ]
     <|
         Decode.field "createProject"
-            (Decode.map Project (Decode.field "id" Decode.string))
+            (Decode.map3 Project
+                (Decode.field "id" Decode.string)
+                (Decode.succeed [])
+                (Decode.succeed [])
+            )
 
 
 encodeConfigurationInput : ConfigurationInput -> Value

@@ -7,6 +7,7 @@ import Layout
 import Page.Home
 import Page.Loading
 import Page.NotFound
+import Page.Project exposing (fetchProject)
 import Route exposing (Route)
 import Url exposing (Url)
 
@@ -26,6 +27,7 @@ type Msg
     | UrlChanged Url
     | UrlRequested Browser.UrlRequest
     | HomeMsg Page.Home.Msg
+    | ProjectMsg Page.Project.Msg
 
 
 initialModel : Nav.Key -> Model
@@ -71,6 +73,14 @@ update msg model =
                 |> Page.Home.update homeMsg
                 |> updateRoute Route.Home HomeMsg model
 
+        ( ProjectMsg projectMsg, Route.Project projectModel ) ->
+            projectModel
+                |> Page.Project.update projectMsg
+                |> updateRoute Route.Project ProjectMsg model
+
+        ( UrlChanged url, _ ) ->
+            routeTo url model
+
         ( _, _ ) ->
             ( model, Cmd.none )
 
@@ -94,6 +104,9 @@ view model =
 
         Route.Home homeModel ->
             viewPage2 (Page.Home.view homeModel) HomeMsg
+
+        Route.Project projectModel ->
+            viewPage2 (Page.Project.view projectModel) ProjectMsg
 
         Route.NotFound ->
             viewPage Page.NotFound.view
@@ -123,11 +136,16 @@ routeTo : Url -> Model -> ( Model, Cmd Msg )
 routeTo url model =
     let
         maybeRoute =
-            Route.fromUrl url
+            Route.fromUrl model.navKey url
     in
     case maybeRoute of
         Nothing ->
             ( { model | route = Route.NotFound }, Cmd.none )
 
         Just route ->
-            ( { model | route = route }, Cmd.none )
+            case route of
+                Route.Project projectModel ->
+                    ( { model | route = route }, Cmd.map ProjectMsg (fetchProject projectModel.params.projectId) )
+
+                _ ->
+                    ( { model | route = route }, Cmd.none )

@@ -29,6 +29,11 @@ mutation fields decoder =
 -- SERIALIZER
 
 
+serializeQuery : List Field -> String
+serializeQuery fields =
+    serialize "query" fields
+
+
 serializeMutation : List Field -> String
 serializeMutation fields =
     serialize "mutation" fields

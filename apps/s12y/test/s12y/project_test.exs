@@ -73,11 +73,11 @@ defmodule S12y.ProjectTest do
       :ok
     end
 
-    test "get_dependencies/1 return flatten dependencies when project are given" do
+    test "list_dependencies/1 return flatten dependencies when project are given" do
       with {:ok, %{project: project, dependency: dependency}} <- dependency_fixture(),
            {:ok, %{children: [child, _]}} <- Project.add_dependencies(dependency, @nested_attrs),
            {:ok, _} <- Project.add_dependencies(child, @transient_attrs),
-           dependencies <- Project.get_dependencies(project),
+           dependencies <- Project.list_dependencies(project),
            dependencies <- Enum.map(dependencies, &Map.take(&1, [:name, :repo, :version])) do
         assert [
                  %{name: "phoenix", repo: "hexpm", version: "~> 1.4.9"},
@@ -188,9 +188,9 @@ defmodule S12y.ProjectTest do
     }
     @partial_attrs %{"Marvin" => %{}}
 
-    test "get_maintainers/1 return flatten list of maintainers of a given project" do
+    test "list_maintainers/1 return flatten list of maintainers of a given project" do
       with {:ok, %{project: project}} <- maintainer_fixture(),
-           maintainers <- Project.get_maintainers(project),
+           maintainers <- Project.list_maintainers(project),
            maintainers <- Enum.map(maintainers, &Map.take(&1, [:handle, :email])),
            maintainers <- Enum.sort_by(maintainers, & &1.handle) do
         assert [
