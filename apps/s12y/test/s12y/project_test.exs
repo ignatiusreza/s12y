@@ -108,6 +108,15 @@ defmodule S12y.ProjectTest do
       end
     end
 
+    test "add_dependencies/2 does not broadcast :created event for existing dependency" do
+      with {:ok, %{configuration: configuration}} <- configuration_fixture(),
+           {:ok, configuration} <- Project.add_dependencies(configuration, @valid_attrs),
+           [dependency] <- configuration.dependencies,
+           {:ok, _} <- Project.add_dependencies(configuration, @valid_attrs) do
+        assert DependencySubscription.state() == [{:created, dependency}]
+      end
+    end
+
     test "add_dependencies/2 record nested dependency into a given dependency" do
       with {:ok, %{dependency: dependency}} <- dependency_fixture() do
         assert 0 == Project.count_dependency_parents(dependency)
