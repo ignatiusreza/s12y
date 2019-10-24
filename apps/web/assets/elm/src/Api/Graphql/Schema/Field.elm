@@ -36,7 +36,7 @@ serialize indentation fields =
         _ ->
             fields
                 |> List.map (serializeField indentation)
-                |> String.join " "
+                |> String.join "\n"
                 |> (\a -> [ a, String.repeat (indentation - 1) "  " ])
                 |> interpolate " {\n{0}\n{1}}"
 
