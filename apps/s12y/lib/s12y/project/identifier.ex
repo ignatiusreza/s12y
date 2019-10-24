@@ -21,7 +21,7 @@ defmodule S12y.Project.Identifier do
   @doc false
   def changeset(identifier, attrs) do
     identifier
-    |> cast(attrs, @required_fields, @optional_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_assoc(:configurations, required: true)
   end
 end

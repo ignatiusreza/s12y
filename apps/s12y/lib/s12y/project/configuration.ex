@@ -21,7 +21,7 @@ defmodule S12y.Project.Configuration do
   @doc false
   def changeset(configuration, attrs) do
     configuration
-    |> cast(attrs, @required_fields, @optional_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_parser
     |> validate_required(@required_fields)
   end
