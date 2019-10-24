@@ -2,6 +2,7 @@ module Page.Home exposing (Model, Msg(..), init, update, view)
 
 import Api exposing (ApiResult)
 import Api.Project exposing (Project, createProject)
+import Browser.Navigation as Nav
 import File exposing (File)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -16,12 +17,14 @@ import RemoteData exposing (RemoteData)
 
 
 type alias Model =
-    RemoteData Http.Error Project
+    { navKey : Nav.Key
+    , state : RemoteData Http.Error Project
+    }
 
 
-init : Model
-init =
-    RemoteData.NotAsked
+init : Nav.Key -> Model
+init navKey =
+    { navKey = navKey, state = RemoteData.NotAsked }
 
 
 
@@ -37,20 +40,22 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         FileSelected [ file ] ->
-            ( RemoteData.Loading
+            ( { model | state = RemoteData.Loading }
             , uploadFile file
             )
 
         FileSelected _ ->
-            ( RemoteData.NotAsked, Cmd.none )
+            ( { model | state = RemoteData.NotAsked }, Cmd.none )
 
         FileUploaded result ->
             case result of
                 Ok project ->
-                    ( RemoteData.Success project, Cmd.none )
+                    ( { model | state = RemoteData.Success project }
+                    , Nav.pushUrl model.navKey ("/projects/" ++ project.id)
+                    )
 
                 Err err ->
-                    ( RemoteData.Failure err, Cmd.none )
+                    ( { model | state = RemoteData.Failure err }, Cmd.none )
 
 
 
@@ -66,7 +71,7 @@ view model =
 
 viewContent : Model -> Html Msg
 viewContent model =
-    case model of
+    case model.state of
         RemoteData.NotAsked ->
             input
                 [ type_ "file"
