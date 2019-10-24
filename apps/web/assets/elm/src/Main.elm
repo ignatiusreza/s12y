@@ -7,7 +7,7 @@ import Layout
 import Page.Home
 import Page.Loading
 import Page.NotFound
-import Page.Project
+import Page.Project exposing (fetchProject)
 import Route exposing (Route)
 import Url exposing (Url)
 
@@ -145,7 +145,7 @@ routeTo url model =
         Just route ->
             case route of
                 Route.Project projectModel ->
-                    ( { model | route = route }, Cmd.none )
+                    ( { model | route = route }, Cmd.map ProjectMsg (fetchProject projectModel.params.projectId) )
 
                 _ ->
                     ( { model | route = route }, Cmd.none )
