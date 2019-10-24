@@ -358,6 +358,8 @@ defmodule S12y.Project do
   defp broadcast({:error, %Ecto.Changeset{}} = passthrough, _), do: passthrough
 
   defp broadcast(dependencies, action) do
-    Enum.each(dependencies, &Broadcast.dependency(action, &1))
+    Enum.each(dependencies, fn dependency ->
+      if dependency.recently_persisted, do: Broadcast.dependency(action, dependency)
+    end)
   end
 end
