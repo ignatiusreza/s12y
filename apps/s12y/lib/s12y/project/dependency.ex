@@ -11,7 +11,9 @@ defmodule S12y.Project.Dependency do
     many_to_many :configurations, Project.Configuration,
       join_through: "configurations_dependencies"
 
-    many_to_many :maintainers, Project.Maintainer, join_through: "dependencies_maintainers"
+    many_to_many :maintainers, Project.Maintainer,
+      join_through: "dependencies_maintainers",
+      on_replace: :delete
 
     many_to_many :parents, Project.Dependency,
       join_through: "dependencies_dependencies",

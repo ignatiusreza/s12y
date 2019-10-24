@@ -159,6 +159,24 @@ defmodule S12y.ProjectTest do
 
   describe "maintainers" do
     @valid_attrs valid_maintainer_attrs()
+    @update_attrs %{
+      "chrismccord" => %{
+        "email" => "chris@chrismccord.com",
+        "url" => "https://hex.pm/api/users/chrismccord"
+      },
+      "josevalim" => %{
+        "email" => "jose.valim@gmail.com",
+        "url" => "https://hex.pm/api/users/josevalim"
+      },
+      "gazler" => %{
+        "email" => "gazler@gmail.com",
+        "url" => "https://hex.pm/api/users/gazler"
+      },
+      "jeregrine" => %{
+        "email" => "jason@rokkincat.com",
+        "url" => "https://hex.pm/api/users/jeregrine"
+      }
+    }
     @partial_attrs %{"Marvin" => %{}}
 
     test "get_maintainers/1 return flatten list of maintainers of a given project" do
@@ -183,6 +201,37 @@ defmodule S12y.ProjectTest do
                  %{handle: "chrismccord", email: "chris@chrismccord.com"},
                  %{handle: "josevalim", email: "jose.valim@gmail.com"}
                ] == maintainers
+      end
+    end
+
+    test "set_maintainers/2 able to update the dependency maintainers information adding new ones" do
+      with {:ok, %{dependency: dependency}} <- dependency_fixture(),
+           {:ok, dependency} <- Project.set_maintainers(dependency, @valid_attrs),
+           {:ok, dependency} <- Project.set_maintainers(dependency, @update_attrs),
+           maintainers <- dependency.maintainers,
+           maintainers <- Enum.map(maintainers, &Map.take(&1, [:handle, :email])),
+           maintainers <- Enum.sort_by(maintainers, & &1.handle) do
+        assert [
+                 %{handle: "chrismccord", email: "chris@chrismccord.com"},
+                 %{handle: "gazler", email: "gazler@gmail.com"},
+                 %{handle: "jeregrine", email: "jason@rokkincat.com"},
+                 %{handle: "josevalim", email: "jose.valim@gmail.com"}
+               ] == maintainers
+      end
+    end
+
+    test "set_maintainers/2 able to update the dependency maintainers information removing existing ones" do
+      with {:ok, %{dependency: dependency}} <- dependency_fixture(),
+           {:ok, dependency} <- Project.set_maintainers(dependency, @valid_attrs),
+           {:ok, dependency} <-
+             Project.set_maintainers(dependency, Map.take(@valid_attrs, ["chrismccord"])),
+           maintainers <- dependency.maintainers,
+           maintainers <- Enum.map(maintainers, &Map.take(&1, [:handle, :email])),
+           maintainers <- Enum.sort_by(maintainers, & &1.handle) do
+        assert [%{handle: "chrismccord", email: "chris@chrismccord.com"}] == maintainers
+
+        # ensure that none of the maintainer record is actually deleted, only the association
+        assert Project.count_maintainers() == 2
       end
     end
 
