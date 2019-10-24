@@ -156,4 +156,43 @@ defmodule S12y.ProjectTest do
       end
     end
   end
+
+  describe "maintainers" do
+    @valid_attrs valid_maintainer_attrs()
+    @partial_attrs %{"Marvin" => %{}}
+
+    test "get_maintainers/1 return flatten list of maintainers of a given project" do
+      with {:ok, %{project: project}} <- maintainer_fixture(),
+           maintainers <- Project.get_maintainers(project),
+           maintainers <- Enum.map(maintainers, &Map.take(&1, [:handle, :email])),
+           maintainers <- Enum.sort_by(maintainers, & &1.handle) do
+        assert [
+                 %{handle: "chrismccord", email: "chris@chrismccord.com"},
+                 %{handle: "josevalim", email: "jose.valim@gmail.com"}
+               ] == maintainers
+      end
+    end
+
+    test "set_maintainers/2 persist the dependency maintainers information" do
+      with {:ok, %{dependency: dependency}} <- dependency_fixture(),
+           {:ok, dependency} <- Project.set_maintainers(dependency, @valid_attrs),
+           maintainers <- dependency.maintainers,
+           maintainers <- Enum.map(maintainers, &Map.take(&1, [:handle, :email])),
+           maintainers <- Enum.sort_by(maintainers, & &1.handle) do
+        assert [
+                 %{handle: "chrismccord", email: "chris@chrismccord.com"},
+                 %{handle: "josevalim", email: "jose.valim@gmail.com"}
+               ] == maintainers
+      end
+    end
+
+    test "set_maintainers/2 called with partial information still persists" do
+      with {:ok, %{dependency: dependency}} <- dependency_fixture(),
+           {:ok, dependency} <- Project.set_maintainers(dependency, @partial_attrs),
+           maintainers <- dependency.maintainers,
+           maintainers <- Enum.map(maintainers, &Map.take(&1, [:handle, :email])) do
+        assert [%{handle: "Marvin", email: nil}] == maintainers
+      end
+    end
+  end
 end

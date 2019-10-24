@@ -24,6 +24,21 @@ defmodule S12y.Fixture do
     end
   end
 
+  defmacro valid_maintainer_attrs do
+    quote do
+      %{
+        "chrismccord" => %{
+          "email" => "chris@chrismccord.com",
+          "url" => "https://hex.pm/api/users/chrismccord"
+        },
+        "josevalim" => %{
+          "email" => "jose.valim@gmail.com",
+          "url" => "https://hex.pm/api/users/josevalim"
+        }
+      }
+    end
+  end
+
   defmacro malformed_project_attrs do
     fixture = read_fixture!("parsers/mix/malformed/input")
 
@@ -73,6 +88,14 @@ defmodule S12y.Fixture do
          {:ok, configuration} <- Project.add_dependencies(configuration, attrs),
          dependency <- List.first(configuration.dependencies) do
       {:ok, %{project: project, configuration: configuration, dependency: dependency}}
+    end
+  end
+
+  def maintainer_fixture(attrs \\ valid_maintainer_attrs()) do
+    with {:ok, %{dependency: dependency} = result} <- dependency_fixture(),
+         {:ok, dependency} <- Project.set_maintainers(dependency, attrs),
+         maintainer <- List.first(dependency.maintainers) do
+      {:ok, Map.merge(result, %{dependency: dependency, maintainer: maintainer})}
     end
   end
 end

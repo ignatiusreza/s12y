@@ -36,6 +36,14 @@ defmodule S12y.Registries.Worker.SubscriptionTest do
 
       assert Project.count_dependency_children(dependency) == 5
     end
+
+    test "saves maintainers", %{dependency: dependency, example: example} do
+      assert Project.count_maintainers(dependency) == 0
+
+      {:ok, dependency} = example.()
+
+      assert Project.count_maintainers(dependency) == 4
+    end
   end
 
   describe "Worker.Subscription.handle_message(:lookup_failed)" do
@@ -72,6 +80,14 @@ defmodule S12y.Registries.Worker.SubscriptionTest do
       example.()
 
       assert Project.count_dependencies() == before
+    end
+
+    test "does not save new maintainers to database", %{example: example} do
+      before = Project.count_maintainers()
+
+      example.()
+
+      assert Project.count_maintainers() == before
     end
   end
 end

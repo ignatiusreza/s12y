@@ -11,6 +11,8 @@ defmodule S12y.Project.Dependency do
     many_to_many :configurations, Project.Configuration,
       join_through: "configurations_dependencies"
 
+    many_to_many :maintainers, Project.Maintainer, join_through: "dependencies_maintainers"
+
     many_to_many :parents, Project.Dependency,
       join_through: "dependencies_dependencies",
       join_keys: [child_id: :id, parent_id: :id]
@@ -40,7 +42,7 @@ defmodule S12y.Project.Dependency do
   @doc false
   def changeset(dependency, attrs) do
     dependency
-    |> cast(attrs, @required_fields, @optional_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
     |> put_change(:recently_persisted, true)
     |> validate_required(@required_fields)
   end

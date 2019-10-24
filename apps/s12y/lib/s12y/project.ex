@@ -76,26 +76,14 @@ defmodule S12y.Project do
     Project.Dependency
     |> Repo.get(id)
     |> Repo.preload(:children)
+    |> Repo.preload(:maintainers)
   end
 
   @doc """
   Return flatten dependencies of a single project.
   """
   def get_dependencies(%Project.Identifier{} = project) do
-    initial =
-      Project.Dependency
-      |> join(:inner, [d], c in assoc(d, :configurations))
-      |> where([d, c], c.project_id == ^project.id)
-
-    recursion =
-      Project.Dependency
-      |> join(:inner, [d], ch in assoc(d, :children))
-
-    cte = initial |> union_all(^recursion)
-
-    Project.Dependency
-    |> recursive_ctes(true)
-    |> with_cte("dependency_tree", as: ^cte)
+    dependencies_cte(project)
     |> Repo.all()
   end
 
@@ -203,6 +191,9 @@ defmodule S12y.Project do
       |> Multi.run(:dependencies, fn _, _ ->
         add_dependencies(dependency, Map.get(details, "dependencies"))
       end)
+      |> Multi.run(:maintainers, fn _, _ ->
+        set_maintainers(dependency, Map.get(details, "maintainers"))
+      end)
       |> Multi.run(:dependency, fn _, _ ->
         dependency
         |> Ecto.Changeset.change(%{lookup_at: current_time()})
@@ -219,6 +210,23 @@ defmodule S12y.Project do
     dependency
     |> Ecto.Changeset.change(%{lookup_failed_at: current_time(), lookup_error: error})
     |> Repo.update()
+  end
+
+  defp dependencies_cte(project) do
+    initial =
+      Project.Dependency
+      |> join(:inner, [d], c in assoc(d, :configurations))
+      |> where([d, c], c.project_id == ^project.id)
+
+    recursion =
+      Project.Dependency
+      |> join(:inner, [d], ch in assoc(d, :children))
+
+    cte = initial |> union_all(^recursion)
+
+    Project.Dependency
+    |> recursive_ctes(true)
+    |> with_cte("dependency_tree", as: ^cte)
   end
 
   defp find_or_create_dependency(attrs) do
@@ -248,6 +256,89 @@ defmodule S12y.Project do
   defp create_dependency(attrs) do
     %Project.Dependency{}
     |> Project.Dependency.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  ### MAINTAINER
+
+  @doc """
+  Get a flatten list of maintainers for a given project.
+  """
+  def get_maintainers(%Project.Identifier{} = project) do
+    dependencies = project |> dependencies_cte() |> subquery()
+
+    Project.Maintainer
+    |> join(:inner, [m], dm in "dependencies_maintainers", on: m.id == dm.maintainer_id)
+    |> join(:inner, [m, dm], d in ^dependencies, on: dm.dependency_id == d.id)
+    |> Repo.all()
+  end
+
+  @doc """
+  Update the list of maintainers of a dependency
+  """
+  def set_maintainers(%Project.Dependency{} = dependency, maintainers) do
+    multi =
+      Multi.new()
+      |> Multi.run(:maintainers, fn _, _ ->
+        maintainers
+        |> Enum.reduce({:ok, []}, fn {handle, maintainer}, prev ->
+          with {:ok, maintainers} <- prev,
+               {:ok, maintainer} <-
+                 find_or_create_maintainer(Map.put(maintainer, "handle", handle)) do
+            {:ok, [maintainer | maintainers]}
+          end
+        end)
+      end)
+      |> Multi.run(:dependency, fn _, %{maintainers: maintainers} ->
+        # preload maintainers
+        dependency = Project.get_dependency(dependency.id)
+        maintainers = maintainers |> Enum.uniq_by(& &1.id)
+
+        dependency
+        |> Ecto.Changeset.change()
+        |> Ecto.Changeset.put_assoc(:maintainers, maintainers)
+        |> Repo.update()
+      end)
+      |> Repo.transaction()
+
+    with {:ok, %{dependency: dependency}} <- multi do
+      {:ok, dependency}
+    end
+  end
+
+  def count_maintainers do
+    from(c in Project.Maintainer)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_maintainers(%Project.Dependency{} = dependency) do
+    from(c in "dependencies_maintainers", where: c.dependency_id == ^dependency.id)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  defp find_or_create_maintainer(attrs), do: find_maintainer(attrs) || create_maintainer(attrs)
+
+  defp find_maintainer(%{"handle" => handle, "email" => email}) do
+    query = from d in Project.Maintainer, where: d.handle == ^handle and d.email == ^email
+
+    case Repo.one(query) do
+      nil -> nil
+      maintainer -> {:ok, maintainer}
+    end
+  end
+
+  defp find_maintainer(%{handle: _, email: _}) do
+    IO.warn(
+      "Don't pass in maintainer with atom keys, maintainer are expected to be come from parsed JSON, which have string keys",
+      Macro.Env.stacktrace(__ENV__)
+    )
+  end
+
+  defp find_maintainer(_attrs), do: nil
+
+  defp create_maintainer(attrs) do
+    %Project.Maintainer{}
+    |> Project.Maintainer.changeset(attrs)
     |> Repo.insert()
   end
 
