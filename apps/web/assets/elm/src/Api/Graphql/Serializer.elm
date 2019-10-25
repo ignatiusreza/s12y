@@ -4,7 +4,6 @@ import Api.Graphql.Schema as Schema exposing (Schema)
 import Api.Graphql.Schema.Argument as Argument exposing (Argument)
 import Api.Graphql.Schema.Field as Field exposing (Field)
 import Api.Graphql.Schema.Value as Value exposing (Value)
-import Debug exposing (todo)
 import File exposing (File)
 import Http
 import Json.Decode as Decode exposing (Decoder)
@@ -121,11 +120,8 @@ filesPart files =
         [] ->
             []
 
-        [ file ] ->
-            [ Http.filePart "upload" file ]
-
         file :: _ ->
-            todo "Uploading multiple files is not yet supported" (filesPart [ file ])
+            [ Http.filePart "upload" file ]
 
 
 
