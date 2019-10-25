@@ -13,7 +13,8 @@ secret_key_base =
 
 config :web, Web.Endpoint,
   http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")],
-  secret_key_base: secret_key_base
+  secret_key_base: secret_key_base,
+  server: true
 
 # ## Using releases (Elixir v1.9+)
 #
